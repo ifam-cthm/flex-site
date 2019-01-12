@@ -26,7 +26,10 @@ require __DIR__ . '/../src/middleware.php';
 
 // Register cors
 require __DIR__ . '/../src/cors.php';
-require __DIR__ . '/../src/models/Responsaveis/routes.php';
+require __DIR__ . '/../src/models/Usuario/routes.php';
+require __DIR__ . '/../src/models/Setor/routes.php';
+require __DIR__ . '/../src/models/Documentos/routes.php';
+require __DIR__ . '/../src/models/Tipos/routes.php';
 
 
 
