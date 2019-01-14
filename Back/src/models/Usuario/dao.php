@@ -3,7 +3,7 @@
 
 function get_responsaveis($db)
 {
-    $str = $db->prepare("SELECT nome FROM usuario");
+    $str = $db->prepare("SELECT nome, login FROM usuario");
     $str->execute();
     return $str->fetchAll();
 }
@@ -73,6 +73,29 @@ function usuario_cadastro($db, $usuario)
     $str = $db->prepare("SELECT u.nome, u.login FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
         WHERE u.login = :login");
     $str->bindParam("login", $login["login"]);
+    $str->execute();
+    $usuario = $str->fetchAll();
+    if (count($usuario) > 0) {
+        return $usuario[0];
+    } else {
+        return array();
+    }
+}
+
+function responsavel_cadastro($db, $responsavel)
+{
+    $str = $db->prepare("INSERT INTO responsavel (loginUsuario, idDocumento, dateEntrada) VALUES 
+        (:loginUsuario, :idDocumento, CONVERT(DATE, :dateEntrada,103))");
+    $str->bindParam("loginUsuario", $responsavel["loginUsuario"]);
+    $str->bindParam("idDocumento", $responsavel["idDocumento"]);
+    $data = date('d/m/Y');
+    $str->bindParam("dateEntrada", $data);
+    $str->execute();
+
+    $str = $db->prepare("SELECT r.loginUsuario, r.idDocumento FROM responsavel r 
+        WHERE r.loginUsuario = :loginUsuario and r.idDocumento = :idDocumento");
+    $str->bindParam("loginUsuario", $login["loginUsuario"]);
+    $str->bindParam("idDocumento", $login["idDocumento"]);
     $str->execute();
     $usuario = $str->fetchAll();
     if (count($usuario) > 0) {

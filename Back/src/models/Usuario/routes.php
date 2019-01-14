@@ -18,6 +18,12 @@ $app->post('/usuario', function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
+$app->post('/responsavel', function ($request, $response, $args) {
+    $responsavel = $request->getParsedBody();
+    $retorno = responsavel_cadastro($this->db, $responsavel);
+    return $this->response->withJson($retorno);
+});
+
 $app->post('/usuario/administrador', function ($request, $response, $args) {
     $usuario = $request->getParsedBody();
     $retorno = usuario_cadastroAdministrador($this->db, $usuario);

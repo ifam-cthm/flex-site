@@ -1,5 +1,29 @@
 <?php
 
+function documento_cadastro($db, $documento)
+{
+    $str = $db->prepare("INSERT INTO documento (nome, idSetor, idTipo, dataCadastrado, dataVencimento, bloqueado) VALUES 
+        (:nome, :idSetor, :idTipo, CONVERT(DATE, :dataCadastrado,103), :dataVencimento,  0)");
+    $str->bindParam("nome", $documento["nome"]);
+    $str->bindParam("idSetor", $documento["setor"]);
+    $str->bindParam("idTipo", $documento["tipo"]);
+    $data = date('d/m/Y');
+    $str->bindParam("dataCadastrado", $data);
+    $str->bindParam("dataVencimento", $documento["dataVencimento"]);
+
+    $str->execute();
+
+    $str = $db->prepare("SELECT * FROM documento WHERE nome = :nome");
+    $str->bindParam("nome", $documento["nome"]);
+    $str->execute();
+    $documento = $str->fetchAll();
+    if (count($documento) > 0) {
+        return $documento[0];
+    } else {
+        return array();
+    }
+}
+
 function get_documentos_vencidos($db, $filtro)
 {
     $data = $filtro["data"];

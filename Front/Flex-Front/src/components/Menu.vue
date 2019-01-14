@@ -39,8 +39,8 @@
       <v-menu offset-y>
         <v-toolbar-title slot="activator">Pedro</v-toolbar-title>
         <v-list>
-          <v-list-tile>
-            <v-list-tile-title style="cursor:pointer" @click="sair">Sair</v-list-tile-title>
+          <v-list-tile style="cursor:pointer" @click="sair">
+            <v-list-tile-title>Sair</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -82,7 +82,7 @@ export default {
         },
         {
           title: "Documentos",
-          path: ""
+          path: "CadastrarDocumento"
         },
         {
           title: "Usuarios",
