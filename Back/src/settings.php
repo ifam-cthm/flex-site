@@ -15,7 +15,7 @@ return [
             "host" => "localhost",
             "dbname" => "flex_ged",
             "user" => "sa",
-            "pass" => "Pedro8251"
+            "pass" => "cthm@flex2019"
         ],
     ],
 ];

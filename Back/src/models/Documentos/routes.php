@@ -18,6 +18,12 @@ $app->post('/documentosvencidos', function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
+$app->post('/documentosencontrados', function ($request, $response, $args) {
+    $filtro = $request->getParsedBody();
+    $retorno = get_documentos_encontrados($this->db, $filtro);
+    return $this->response->withJson($retorno);
+});
+
 $app->get("/documentos", function ($request, $response, $args) {
     $retorno = get_documentos($this->db);
     return $this->response->withJson($retorno);

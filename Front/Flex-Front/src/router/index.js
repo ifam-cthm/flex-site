@@ -12,6 +12,9 @@ import ListaUsuario from '@/components/ListaUsuario.vue'
 ///////////////////////////
 import Menu from '@/components/Menu.vue'
 import DocumentosVencimento from '@/components/DocumentosVencidos.vue'
+////////////////////////////////////////////////////
+import BuscarDocumentos from '@/components/BuscarDocumentos.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +41,11 @@ export default new Router({
           path: '/DocumentosVencidos',
           name: 'DocumentosVencidos',
           component: DocumentosVencimento
+        },
+        {
+          path: '/BuscaDocumentos',
+          name: 'BuscaDocumentos',
+          component: BuscarDocumentos
         },
         {
           path: '/ListaDocumentos',

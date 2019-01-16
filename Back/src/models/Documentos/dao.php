@@ -98,6 +98,22 @@ function get_documentos_vencidos($db, $filtro)
     return $retorno;
 }
 
+function get_documentos_encontrados($db, $filtro)
+{
+    $str = $db->prepare("EXEC documentosEncontrados :nome, :s1, :s2, :t1, :t2, :r1, :r2");
+    $str->bindParam("nome", $filtro["nome"]);
+    $str->bindParam("s1", $filtro["s1"]);
+    $str->bindParam("s2", $filtro["s2"]);
+    $str->bindParam("t1", $filtro["t1"]);
+    $str->bindParam("t2", $filtro["t2"]);
+    $str->bindParam("r1", $filtro["r1"]);
+    $str->bindParam("r2", $filtro["r2"]);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
+
 function get_documentos($db)
 {
     $str = $db->prepare("SELECT d.id, d.nome nome, s.nome setor, t.nome tipo, 

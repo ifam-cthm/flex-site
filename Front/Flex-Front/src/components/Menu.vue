@@ -30,14 +30,24 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-group>
-        <v-list-tile v-for="item in listaMenu" :key="item.nome">
+        <v-list-group no-action prepend-icon="insert_drive_file">
+          <v-list-tile slot="activator">
+            <v-list-tile-title>Documentos</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile sub-group v-for="item in listaMenuDocumentos" :key="item.nome">
+            <v-list-tile-title>
+              <router-link :to="{name: item.path}">{{item.title}}</router-link>
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+        <!-- <v-list-tile v-for="item in listaMenu" :key="item.nome">
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
           <v-list-tile-title>
             <router-link :to="{name: item.path}">{{item.title}}</router-link>
           </v-list-tile-title>
-        </v-list-tile>
+        </v-list-tile> -->
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dense app :clipped-left="clipped">
@@ -74,11 +84,16 @@ export default {
       drawer: false,
       fixed: false,
       miniVariant: false,
-      listaMenu: [
+      listaMenuDocumentos: [
         {
           icon: "insert_drive_file",
           title: "Documentos",
           path: "DocumentosVencidos"
+        },
+        {
+          icon: "insert_drive_file",
+          title: "Buscar documentos",
+          path: "BuscaDocumentos"
         }
       ],
       listaMenuAdministrador: [
