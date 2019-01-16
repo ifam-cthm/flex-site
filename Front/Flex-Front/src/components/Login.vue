@@ -38,11 +38,11 @@
     </v-dialog>
     <div style="margin: 50px auto; width: 40%; text-align: center;">
       <img src="../assets/logo.jpg">
-      <v-form ref="form">
+      <v-form ref="form" @keyup.enter="entrar">
         <div v-if="!logando">
           <v-text-field v-model="login.login" label="Login" required></v-text-field>
           <v-text-field v-model="login.senha" label="Senha" type="password" required></v-text-field>
-          <v-btn color="success" @keyup.enter="entrar" @click="entrar">Entrar</v-btn>
+          <v-btn color="success"  @click="entrar">Entrar</v-btn>
         </div>
         <div v-else>
           <v-text-field disabled v-model="login.login" label="Login" required></v-text-field>

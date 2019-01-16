@@ -2,7 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import CadastrarAdministrador from '@/components/CadastrarAdministrador.vue'
+/////////////////////////
 import CadastrarDocumento from '@/components/CadastrarDocumento.vue'
+import ListaDocumento from '@/components/ListaDocumentos.vue'
+///////////////////////////
+/////////////////////////
+import CadastrarUsuario from '@/components/CadastrarUsuario.vue'
+import ListaUsuario from '@/components/ListaUsuario.vue'
+///////////////////////////
 import Menu from '@/components/Menu.vue'
 import DocumentosVencimento from '@/components/DocumentosVencidos.vue'
 Vue.use(Router)
@@ -10,6 +17,10 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [{
+      path: "*",
+      redirect: "/Ged"
+    },
+    {
       path: '/',
       name: 'Login',
       component: Login
@@ -29,10 +40,39 @@ export default new Router({
           component: DocumentosVencimento
         },
         {
+          path: '/ListaDocumentos',
+          name: 'ListaDocumentos',
+          component: ListaDocumento
+        },
+        {
           path: '/CadastrarDocumento',
           name: 'CadastrarDocumento',
           component: CadastrarDocumento
-        }
+        },
+        {
+          path: '/CadastrarDocumento/:id',
+          props: true,
+          name: 'CadastrarDocumento2',
+          component: CadastrarDocumento
+        },
+
+        {
+          path: '/ListaUsuarios',
+          name: 'ListaUsuarios',
+          component: ListaUsuario
+        },
+        {
+          path: '/CadastrarUsuario',
+          name: 'CadastrarUsuario',
+          component: CadastrarUsuario
+        },
+        {
+          path: '/CadastrarUsuario/:id',
+          props: true,
+          name: 'CadastrarUsuario2',
+          component: CadastrarUsuario
+        },
+
       ]
     },
   ]

@@ -3,22 +3,74 @@
 function documento_cadastro($db, $documento)
 {
     $str = $db->prepare("INSERT INTO documento (nome, idSetor, idTipo, dataCadastrado, dataVencimento, bloqueado) VALUES 
-        (:nome, :idSetor, :idTipo, CONVERT(DATE, :dataCadastrado,103), :dataVencimento,  0)");
+        (:nome, :idSetor, :idTipo, CONVERT(DATE, :dataCadastrado,103), 
+        :dataVencimento,  0)");
     $str->bindParam("nome", $documento["nome"]);
     $str->bindParam("idSetor", $documento["setor"]);
     $str->bindParam("idTipo", $documento["tipo"]);
     $data = date('d/m/Y');
     $str->bindParam("dataCadastrado", $data);
     $str->bindParam("dataVencimento", $documento["dataVencimento"]);
-
     $str->execute();
 
-    $str = $db->prepare("SELECT * FROM documento WHERE nome = :nome");
+    $str = $db->prepare("SELECT TOP 1 * FROM documento ORDER BY id DESC");
+    $str->execute();
+    $documentoC = $str->fetchAll();
+
+
+    if (count($documentoC) > 0) {
+        $str = $db->prepare("INSERT INTO responsavel (loginUsuario, idDocumento, dateEntrada)
+        VALUES (:login, :id, CONVERT(DATE, :data,103))");
+        $str->bindParam("login", $documento["responsavel"]);
+        $str->bindParam("id", $documentoC[0]["id"]);
+        $str->bindParam("data", $data);
+        $str->execute();
+        return $documentoC[0];
+    } else {
+        return array();
+    }
+}
+
+
+function documento_atualizacao($db, $documento)
+{
+    $str = $db->prepare("UPDATE documento SET nome = :nome, 
+    idSetor = :idSetor, idTipo = :idTipo, dataCadastrado = :dataCadastrado, 
+    dataVencimento = :dataVencimento
+    WHERE id = :id");
+    $str->bindParam("id", $documento["id"]);
     $str->bindParam("nome", $documento["nome"]);
+    $str->bindParam("idSetor", $documento["setor"]);
+    $str->bindParam("idTipo", $documento["tipo"]);
+    $data = date('d/m/Y');
+    $str->bindParam("dataCadastrado", $data);
+    $str->bindParam("dataVencimento", $documento["dataVencimento"]);
     $str->execute();
-    $documento = $str->fetchAll();
-    if (count($documento) > 0) {
-        return $documento[0];
+
+    $str = $db->prepare("SELECT * FROM responsavel WHERE idDocumento = :idDocumento AND dateSaida IS NULL");
+    $str->bindParam("idDocumento", $documento["id"]);
+    $str->execute();
+    $documentoC = $str->fetchAll();
+
+    if ($documentoC[0]["loginUsuario"] != $documento["responsavel"]) {
+        $str = $db->prepare("UPDATE responsavel SET dateSaida = CONVERT(date, :dateSaida, 103)  WHERE id = :id");
+        $str->bindParam("id", $documentoC[0]["id"]);
+        $str->bindParam("dateSaida", $data);
+        $str->execute();
+        $str = $db->prepare("INSERT INTO responsavel (loginUsuario, idDocumento, dateEntrada)
+        VALUES (:login, :id, CONVERT(DATE, :data,103))");
+        $str->bindParam("login", $documento["responsavel"]);
+        $str->bindParam("id", $documento["id"]);
+        $str->bindParam("data", $data);
+        $str->execute();
+    }
+
+    $str = $db->prepare("SELECT * FROM documento WHERE id = :id");
+    $str->bindParam("id", $documento["id"]);
+    $str->execute();
+    $documentoC = $str->fetchAll();
+    if (count($documentoC) > 0) {
+        return $documentoC[0];
     } else {
         return array();
     }
@@ -44,4 +96,44 @@ function get_documentos_vencidos($db, $filtro)
     $str->execute();
     $retorno = $str->fetchAll();
     return $retorno;
+}
+
+function get_documentos($db)
+{
+    $str = $db->prepare("SELECT d.id, d.nome nome, s.nome setor, t.nome tipo, 
+    CONVERT(NVARCHAR, dataCadastrado, 103) dataCadastrado,
+    CONVERT(NVARCHAR, dataVencimento, 103) dataVencimento, u.nome responsavel FROM documento d 
+    INNER JOIN setor s on s.id = d.idSetor
+    INNER JOIN tipo t on t.id = d.idTipo
+    INNER JOIN responsavel r on d.id = r.idDocumento
+    INNER JOIN usuario u on u.login = r.loginUsuario
+    AND r.dateSaida IS NULL
+     WHERE d.bloqueado = 0");
+    $str->execute();
+    return $str->fetchAll();
+}
+
+function get_documento_byId($db, $id)
+{
+    $str = $db->prepare("SELECT d.id, d.nome nome, s.id setor, t.id tipo,  
+    CONVERT(NVARCHAR, dataCadastrado, 120) dataCadastrado,
+    CONVERT(NVARCHAR, dataVencimento, 120) dataVencimento, 
+    u.login responsavel FROM documento d 
+    INNER JOIN setor s on s.id = d.idSetor
+    INNER JOIN tipo t on t.id = d.idTipo  
+    INNER JOIN responsavel r on d.id = r.idDocumento
+    INNER JOIN usuario u on u.login = r.loginUsuario
+    WHERE d.id = :id AND d.bloqueado = 0 AND r.dateSaida IS NULL");
+    $str->bindParam("id", $id);
+    $str->execute();
+    return $str->fetchAll();
+}
+
+
+function documento_delete($db, $id)
+{
+    $str = $db->prepare("UPDATE documento SET bloqueado = 1 WHERE id = :id");
+    $str->bindParam("id", $id);
+    $str->execute();
+    return "ok!";
 }

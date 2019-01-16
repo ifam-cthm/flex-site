@@ -5,10 +5,13 @@ use Slim\Http\Response;
 
 require 'dao.php';
 // Routes
+$app->get("/usuario", function ($request, $response, $args) {
+    $retorno = get_usuarios($this->db);
+    return $this->response->withJson($retorno);
+});
 
-$app->post('/login', function ($request, $response, $args) {
-    $login = $request->getParsedBody();
-    $retorno = login($this->db, $login);
+$app->get("/usuario/{login}", function ($request, $response, $args) {
+    $retorno = get_usuarios_byLogin($this->db, $args["login"]);
     return $this->response->withJson($retorno);
 });
 
@@ -18,9 +21,9 @@ $app->post('/usuario', function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
-$app->post('/responsavel', function ($request, $response, $args) {
-    $responsavel = $request->getParsedBody();
-    $retorno = responsavel_cadastro($this->db, $responsavel);
+$app->put('/usuario/{login}', function ($request, $response, $args) {
+    $usuario = $request->getParsedBody();
+    $retorno = usuario_atualizar($this->db, $usuario);
     return $this->response->withJson($retorno);
 });
 
@@ -29,14 +32,20 @@ $app->post('/usuario/administrador', function ($request, $response, $args) {
     $retorno = usuario_cadastroAdministrador($this->db, $usuario);
     return $this->response->withJson($retorno);
 });
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 $app->get("/responsaveis", function ($request, $response, $args) {
     $retorno = get_responsaveis($this->db);
     return $this->response->withJson($retorno);
 });
 
-
 $app->get('/iniciar', function ($request, $response) {
     $retorno = iniciar($this->db);
+    return $this->response->withJson($retorno);
+});
+
+
+$app->post('/login', function ($request, $response, $args) {
+    $login = $request->getParsedBody();
+    $retorno = login($this->db, $login);
     return $this->response->withJson($retorno);
 });

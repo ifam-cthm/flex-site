@@ -9,6 +9,16 @@
       fixed
       app
     >
+      <v-img :aspect-ratio="16/9">
+        <v-layout pa-2 column fill-height class="lightbox white--text">
+          <v-spacer></v-spacer>
+          <v-flex shrink style="color: black;">
+            <img src="../assets/logo.jpg" alt="Perfil" style="height:50%">
+            <div class="subheading">Pedro Pequeno</div>
+            <div class="body-1">viniciuspedro350@gmail.com</div>
+          </v-flex>
+        </v-layout>
+      </v-img>
       <v-list>
         <v-list-group no-action prepend-icon="create">
           <v-list-tile slot="activator">
@@ -82,11 +92,11 @@ export default {
         },
         {
           title: "Documentos",
-          path: "CadastrarDocumento"
+          path: "ListaDocumentos"
         },
         {
           title: "Usuarios",
-          path: ""
+          path: "ListaUsuarios"
         }
       ]
     };

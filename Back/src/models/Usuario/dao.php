@@ -64,15 +64,15 @@ function usuario_cadastro($db, $usuario)
 {
     $str = $db->prepare("INSERT INTO usuario (nome, login, senha, idSetor) VALUES 
         (:nome, :login, :senha, :idSetor)");
-    $str->bindParam("nome", $login["nome"]);
-    $str->bindParam("login", $login["login"]);
-    $str->bindParam("senha", $login["senha"]);
-    $str->bindParam("idSetor", $login["idSetor"]);
+    $str->bindParam("nome", $usuario["nome"]);
+    $str->bindParam("login", $usuario["login"]);
+    $str->bindParam("senha", $usuario["senha"]);
+    $str->bindParam("idSetor", $usuario["idSetor"]);
     $str->execute();
 
     $str = $db->prepare("SELECT u.nome, u.login FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
         WHERE u.login = :login");
-    $str->bindParam("login", $login["login"]);
+    $str->bindParam("login", $usuario["login"]);
     $str->execute();
     $usuario = $str->fetchAll();
     if (count($usuario) > 0) {
@@ -82,20 +82,49 @@ function usuario_cadastro($db, $usuario)
     }
 }
 
-function responsavel_cadastro($db, $responsavel)
+function get_usuarios($db)
 {
-    $str = $db->prepare("INSERT INTO responsavel (loginUsuario, idDocumento, dateEntrada) VALUES 
-        (:loginUsuario, :idDocumento, CONVERT(DATE, :dateEntrada,103))");
-    $str->bindParam("loginUsuario", $responsavel["loginUsuario"]);
-    $str->bindParam("idDocumento", $responsavel["idDocumento"]);
-    $data = date('d/m/Y');
-    $str->bindParam("dateEntrada", $data);
+    $str = $db->prepare("SELECT login, u.nome, s.nome setor, 
+    CASE u.administrador  
+        WHEN '0' THEN 'NÃO'
+        ELSE 'SIM'
+        END administrador
+    FROM usuario u 
+    INNER JOIN setor s on idSetor = s.id WHERE u.bloqueado = 0");
+    $str->execute();
+    return $str->fetchAll();
+}
+
+function get_usuarios_byLogin($db, $login)
+{
+    $str = $db->prepare("SELECT login, u.nome, idSetor
+    FROM usuario u WHERE u.bloqueado = 0 AND 
+    login = :login");
+    $str->bindParam("login", $login);
+    $str->execute();
+    return $str->fetchAll();
+}
+
+
+function usuario_atualizar($db, $usuario)
+{
+    $str = $db->prepare("UPDATE usuario SET nome = :nome, idSetor = :idSetor 
+        WHERE login = :login");
+    $str->bindParam("nome", $usuario["nome"]);
+    $str->bindParam("login", $usuario["login"]);
+    $str->bindParam("idSetor", $usuario["idSetor"]);
     $str->execute();
 
-    $str = $db->prepare("SELECT r.loginUsuario, r.idDocumento FROM responsavel r 
-        WHERE r.loginUsuario = :loginUsuario and r.idDocumento = :idDocumento");
-    $str->bindParam("loginUsuario", $login["loginUsuario"]);
-    $str->bindParam("idDocumento", $login["idDocumento"]);
+    if (isset($usuario["senha"]) && $usuario["senha"] != "") {
+        $str = $db->prepare("UPDATE usuario SET senha = :senha
+        WHERE login = :login");
+        $str->bindParam("senha", $usuario["senha"]);
+        $str->bindParam("login", $usuario["login"]);
+        $str->execute();
+    }
+    $str = $db->prepare("SELECT u.nome, u.login FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
+        WHERE u.login = :login");
+    $str->bindParam("login", $usuario["login"]);
     $str->execute();
     $usuario = $str->fetchAll();
     if (count($usuario) > 0) {

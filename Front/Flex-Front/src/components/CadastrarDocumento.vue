@@ -35,7 +35,7 @@
 
     <v-container>
       <v-card>
-        <v-card-title class="display-1">Novo documento</v-card-title>
+        <v-card-title class="display-1">{{title}}</v-card-title>
         <v-card-text>
           <v-form ref="form">
             <v-container>
@@ -45,11 +45,11 @@
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-autocomplete
-                    v-model="responsavel.loginUsuario"
+                    v-model="documento.responsavel"
                     :items="itemsResponsaveis"
                     item-text="nome"
                     item-value="login"
-                    label="Responsável(opcional)"
+                    label="Responsável"
                   ></v-autocomplete>
                 </v-flex>
               </v-layout>
@@ -83,7 +83,13 @@
                   ></v-text-field>
                 </v-flex>
               </v-layout>
-              <v-btn color="success" @keyup.enter="cadastrar" @click="cadastrar">Cadastrar</v-btn>
+              <v-btn
+                v-if="cadastro"
+                color="success"
+                @keyup.enter="cadastrar"
+                @click="cadastrar"
+              >Cadastrar</v-btn>
+              <v-btn v-else color="success" @keyup.enter="alterar" @click="alterar">Alterar</v-btn>
             </v-container>
           </v-form>
         </v-card-text>
@@ -100,21 +106,20 @@ export default {
       dialog: false,
       dialogErro: false,
       dialogErro1: false,
-      logando: false,
+      cadastro: true,
+      title: "",
       documento: {
+        id: "",
         nome: "",
         setor: "",
         tipo: "",
         dataVencimento: "",
-        bloqueado: false
+        bloqueado: false,
+        responsavel: ""
       },
       itemsSetores: [],
       itemsTipos: [],
-      itemsResponsaveis: [],
-      responsavel: {
-        loginUsuario: "",
-        idDocumento: ""
-      }
+      itemsResponsaveis: []
     };
   },
   methods: {
@@ -123,7 +128,8 @@ export default {
         this.documento.nome == "" ||
         this.documento.setor == "" ||
         this.documento.tipo == "" ||
-        this.documento.dataVencimento == ""
+        this.documento.dataVencimento == "" ||
+        this.documento.responsavel == ""
       ) {
         dialogErro = true;
       } else {
@@ -131,7 +137,7 @@ export default {
           .post("documento", this.documento)
           .then(response => {
             if (response.data) {
-              this.responsavel.idDocumento = response.data["id"];
+              this.$router.push({ name: "ListaDocumentos" });
             } else {
             }
           })
@@ -139,28 +145,48 @@ export default {
             console.log(e);
             this.dialogErro = true;
           });
-        if (
-          this.responsavel.loginUsuario != "" &&
-          this.responsavel.idDocumento != ""
-        ) {
-          axios
-            .post("responsavel", this.responsavel)
-            .then(response => {
-              if (response.data) {
-                this.$router.push({ name: "DocumentosVencidos" });
-              } else {
-              }
-            })
-            .catch(e => {
-              console.log(e);
-              this.dialogErro = true;
-            });
-        }
+      }
+    },
+    alterar() {
+      if (
+        this.documento.nome == "" ||
+        this.documento.setor == "" ||
+        this.documento.tipo == "" ||
+        this.documento.dataVencimento == "" ||
+        this.documento.responsavel == ""
+      ) {
+        dialogErro = true;
+      } else {
+        axios
+          .put("documentos/" + this.documento.id, this.documento)
+          .then(response => {
+            if (response.data) {
+              this.$router.push({ name: "ListaDocumentos" });
+            } else {
+            }
+          })
+          .catch(e => {
+            console.log(e);
+            this.dialogErro = true;
+          });
       }
     }
   },
 
   created: function() {
+    if (this.$route.params.id) {
+      this.title = "Editar documento";
+      this.cadastro = false;
+      axios
+        .get("documentos/" + this.$route.params.id)
+        .then(response => {
+          this.documento = response.data[0];
+        })
+        .catch(e => {});
+    } else {
+      this.cadastro = true;
+      this.title = "Novo documento";
+    }
     axios
       .get("setores")
       .then(response => {
