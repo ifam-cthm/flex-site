@@ -1,7 +1,8 @@
 var axios = require('axios');
 
 var axiosInstance = axios.create({
-  baseURL: 'http://localhost/flex-site/Back/public/', //Base da API
+  //baseURL: 'http://localhost/flex-site/Back/public/', //Base da API
+  baseURL: 'https://localhost/CTHM-FLEX/flex-site/Back/public/',
   responseType: 'json',
   responseEncoding: 'utf8',
   headers: {

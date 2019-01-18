@@ -1,18 +1,35 @@
 <template>
   <div>
+    <v-snackbar
+      v-model="snackbar"
+      :bottom="y === 'bottom'"
+      :left="x === 'left'"
+      :multi-line="mode === 'multi-line'"
+      :right="x === 'right'"
+      timeout="2000"
+      :top="y === 'top'"
+      :vertical="mode === 'vertical'"
+      color="#689F39"
+    >Pesquisa foi concluída
+      <v-btn color="white" flat @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
+    <div class="text-xs-center">
+      <v-dialog v-model="dialog" hide-overlay persistent width="300">
+        <v-card color="sucess" style="background-color: #689F39;">
+          <v-card-text style="color: white;">Carregando dados
+            <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </div>
     <v-form>
       <v-container>
         <h3>Documentos</h3>
         <br>
         <h4>Filtros:</h4>
         <v-layout>
-
           <v-flex xs12 md4>
-            <v-text-field
-            label="Nome do documento"
-            placeholder="Nome"
-            v-model="filtro.nome"
-          ></v-text-field>
+            <v-text-field label="Nome do documento" placeholder="Nome" v-model="filtro.nome"></v-text-field>
           </v-flex>
           <v-flex xs12 md4>
             <v-select
@@ -45,6 +62,12 @@
               prepend-icon="mdi-city"
             ></v-autocomplete>
           </v-flex>
+          <v-flex xs12 md2>
+            <v-btn color="success" @click="carregar">Carregar</v-btn>
+          </v-flex>
+          <v-flex xs12 md2>
+            <v-btn color="warning" @click="limpar">Limpar</v-btn>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-form>
@@ -67,6 +90,8 @@ export default {
   name: "",
   data() {
     return {
+      dialog: false,
+      snackbar2: false,
       headers: [
         { text: "Documento", value: "name" },
         { text: "Tipo", value: "tipo" },
@@ -86,7 +111,6 @@ export default {
       itemsSetor: [],
       itemsTipos: [],
       itemsResponsaveis: [],
-      data: "",
       filtro: {
         nome: "",
         s1: "",
@@ -100,6 +124,8 @@ export default {
   },
   methods: {
     carregar: function() {
+      this.items = [];
+      this.dialog = true;
       if (this.filtro.s1 != "" && this.filtro.s1 != "   ") {
         this.filtro.s2 = this.filtro.s1;
       } else {
@@ -122,12 +148,24 @@ export default {
       axios
         .post("documentosencontrados", this.filtro)
         .then(response => {
-          console.log(response.data);
+          this.dialog = false;
           this.items = response.data;
+          this.snackbar = true;
         })
         .catch(e => {
           console.log(e);
         });
+    },
+    limpar: function() {
+      this.filtro = {
+        nome: "",
+        s1: "",
+        s2: "",
+        t1: "",
+        t2: "",
+        r1: "",
+        r2: ""
+      };
     }
   },
   created: function() {
