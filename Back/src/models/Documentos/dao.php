@@ -1,5 +1,25 @@
 <?php
 
+function get_grafico($db)
+{
+    $str = $db->prepare("
+select u.nome, count(r.idDocumento) as quantidade from responsavel r
+INNER JOIN usuario u ON (u.login = r.loginUsuario)
+WHERE r.dateSaida IS NULL group by (u.nome)");
+    $str->execute();
+    $usuarios = array();
+    $documentos = array();
+    foreach ($str->fetchAll() as $resultado) {
+        array_push($usuarios, $resultado["nome"]);
+        array_push($documentos, $resultado["quantidade"]);
+    }
+    $retorno = array(
+        "usuarios" => $usuarios,
+        "quantidades" => $documentos
+    );
+    return $retorno;
+}
+
 function documento_cadastro($db, $documento)
 {
     $str = $db->prepare("INSERT INTO documento (nome, idSetor, idTipo, dataCadastrado, dataVencimento, bloqueado) VALUES 

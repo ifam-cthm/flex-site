@@ -10,9 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "apexcharts": "^3.1.0",
     "axios": "^0.18.0",
     "material-design-icons-iconfont": "^4.0.3",
     "vue": "^2.5.2",
+    "vue-apexcharts": "^1.2.8",
     "vue-router": "^3.0.1",
     "vuetify": "^1.4.1"
   },

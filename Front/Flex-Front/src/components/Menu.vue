@@ -30,6 +30,14 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-group>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>dashboard</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>
+            <router-link :to="{name: 'Dashboard'}">Dashboard</router-link>
+          </v-list-tile-title>
+        </v-list-tile>
         <v-list-group no-action prepend-icon="insert_drive_file">
           <v-list-tile slot="activator">
             <v-list-tile-title>Documentos</v-list-tile-title>
@@ -47,7 +55,7 @@
           <v-list-tile-title>
             <router-link :to="{name: item.path}">{{item.title}}</router-link>
           </v-list-tile-title>
-        </v-list-tile> -->
+        </v-list-tile>-->
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dense app :clipped-left="clipped">

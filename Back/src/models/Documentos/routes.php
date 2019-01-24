@@ -6,6 +6,12 @@ use Slim\Http\Response;
 require 'dao.php';
 // Routes
 
+$app->get("/grafico", function ($request, $response, $args) {
+    $retorno = get_grafico($this->db);
+    return $this->response->withJson($retorno);
+});
+
+
 $app->post('/documento', function ($request, $response, $args) {
     $documento = $request->getParsedBody();
     $retorno = documento_cadastro($this->db, $documento);

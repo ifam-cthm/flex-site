@@ -14,6 +14,8 @@ import Menu from '@/components/Menu.vue'
 import DocumentosVencimento from '@/components/DocumentosVencidos.vue'
 ////////////////////////////////////////////////////
 import BuscarDocumentos from '@/components/BuscarDocumentos.vue'
+/////////////////////////////////////////////////////////////
+import Dashboard from '@/components/Dashboard.vue'
 
 Vue.use(Router)
 
@@ -21,7 +23,7 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: "*",
-      redirect: "/Ged"
+      redirect: "/Dashboard"
     },
     {
       path: '/',
@@ -37,7 +39,13 @@ export default new Router({
       path: '/Ged',
       name: 'Menu',
       component: Menu,
-      children: [{
+      children: [
+        {
+          path: "/Dashboard",
+          name: 'Dashboard',
+          component: Dashboard
+        },
+        {
           path: '/DocumentosVencidos',
           name: 'DocumentosVencidos',
           component: DocumentosVencimento
