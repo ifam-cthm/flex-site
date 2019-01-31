@@ -1,0 +1,2 @@
+ALTER TABLE usuario
+ADD email VARCHAR(50) NULL UNIQUE

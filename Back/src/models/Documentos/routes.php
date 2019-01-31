@@ -6,8 +6,13 @@ use Slim\Http\Response;
 require 'dao.php';
 // Routes
 
-$app->get("/grafico", function ($request, $response, $args) {
-    $retorno = get_grafico($this->db);
+$app->get("/get_grafico_documentosXusuarios", function ($request, $response, $args) {
+    $retorno = get_grafico_documentosXusuarios($this->db);
+    return $this->response->withJson($retorno);
+});
+
+$app->get("/get_grafico_documentosXtipos", function ($request, $response, $args) {
+    $retorno = get_grafico_documentosXtipos($this->db);
     return $this->response->withJson($retorno);
 });
 

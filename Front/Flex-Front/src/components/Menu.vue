@@ -14,8 +14,8 @@
           <v-spacer></v-spacer>
           <v-flex shrink style="color: black;">
             <img src="../assets/logo.jpg" alt="Perfil" style="height:50%">
-            <div class="subheading">Pedro Pequeno</div>
-            <div class="body-1">viniciuspedro350@gmail.com</div>
+            <div class="subheading">{{usuario.nome}}</div>
+            <div class="body-1">{{usuario.email}}</div>
           </v-flex>
         </v-layout>
       </v-img>
@@ -65,7 +65,7 @@
 
       <v-spacer></v-spacer>
       <v-menu offset-y>
-        <v-toolbar-title slot="activator">Pedro</v-toolbar-title>
+        <v-toolbar-title slot="activator">{{usuario.login}}</v-toolbar-title>
         <v-list>
           <v-list-tile style="cursor:pointer" @click="sair">
             <v-list-tile-title>Sair</v-list-tile-title>
@@ -87,6 +87,7 @@
 export default {
   data() {
     return {
+      usuario:{},
       drawer: false,
       clipped: false,
       drawer: false,
@@ -126,9 +127,15 @@ export default {
   },
   methods: {
     sair: function() {
-      alert("saindo");
+      localStorage.setItem("flex-site_cthm", null);
+      this.$router.push({name: 'Login'})
     }
+  },
+  created: function(){
+    let usuario = JSON.parse(localStorage.getItem("flex-site_cthm"));
+    this.usuario = usuario
   }
+
 };
 </script>
 

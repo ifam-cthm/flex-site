@@ -144,7 +144,6 @@ export default {
         this.filtro.r1 = "   ";
         this.filtro.r2 = "ZZZZ";
       }
-      console.log(this.filtro);
       axios
         .post("documentosencontrados", this.filtro)
         .then(response => {

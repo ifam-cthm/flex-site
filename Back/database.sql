@@ -40,6 +40,7 @@ CREATE table usuario(
 	idSetor INT NOT NULL,
 	administrador BIT NOT NULL DEFAULT 0,
 	bloqueado BIT NOT NULL DEFAULT 0,
+	email VARCHAR(50) NULL UNIQUE,
 	FOREIGN KEY(idSetor) REFERENCES setor(id),
 	PRIMARY KEY(login)
 );

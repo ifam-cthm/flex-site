@@ -1,6 +1,6 @@
 <?php
 
-function get_grafico($db)
+function get_grafico_documentosXusuarios($db)
 {
     $str = $db->prepare("
 select u.nome, count(r.idDocumento) as quantidade from responsavel r
@@ -15,6 +15,26 @@ WHERE r.dateSaida IS NULL group by (u.nome)");
     }
     $retorno = array(
         "usuarios" => $usuarios,
+        "quantidades" => $documentos
+    );
+    return $retorno;
+}
+
+function get_grafico_documentosXtipos($db)
+{
+    $str = $db->prepare("
+    select t.nome, count(d.id) as quantidade from  documento d
+    INNER JOIN tipo t ON (d.idTipo = t.id)
+    WHERE t.bloqueado = 0 AND d.bloqueado = 0 group by (t.nome)");
+    $str->execute();
+    $tipos = array();
+    $documentos = array();
+    foreach ($str->fetchAll() as $resultado) {
+        array_push($tipos, $resultado["nome"]);
+        array_push($documentos, $resultado["quantidade"]);
+    }
+    $retorno = array(
+        "tipos" => $tipos,
         "quantidades" => $documentos
     );
     return $retorno;

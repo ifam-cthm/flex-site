@@ -25,7 +25,7 @@ function iniciar($db)
 
 function login($db, $login)
 {
-    $str = $db->prepare("SELECT u.nome, u.login FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
+    $str = $db->prepare("SELECT u.nome, u.login, u.email FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
         WHERE u.login = :login AND u.senha = :senha AND u.bloqueado != 1");
     $str->bindParam("login", $login["login"]);
     $str->bindParam("senha", $login["senha"]);

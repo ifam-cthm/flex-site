@@ -77,9 +77,14 @@ export default {
       axios
         .post("login", this.login)
         .then(response => {
-          if (response.data) {
+          if (response.data.nome) {
             this.$router.push({ name: "Menu" });
+            localStorage.setItem(
+                "flex-site_cthm",
+                JSON.stringify(response.data)
+              );
           } else {
+            this.dialogErro1 = true;
           }
         })
         .catch(e => {

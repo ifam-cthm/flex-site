@@ -131,11 +131,9 @@ export default {
         this.filtro.r1 = "   ";
         this.filtro.r2 = "ZZZZ";
       }
-      console.log(this.filtro);
       axios
         .post("documentosvencidos", this.filtro)
         .then(response => {
-          console.log(response.data);
           this.items = response.data;
         })
         .catch(e => {
