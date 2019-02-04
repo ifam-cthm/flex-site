@@ -43,8 +43,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/flex/',
-    assetsPublicPath2: '',
+    assetsPublicPath: '/flex-site/flex/',
 
     /**
      * Source Maps

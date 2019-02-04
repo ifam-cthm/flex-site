@@ -6,7 +6,7 @@ use Slim\Http\Response;
 // e.g: $app->add(new \Slim\Csrf\Guard);
 
 
-$app->add(function (Request $request, Response $response, $next) {
+/*$app->add(function (Request $request, Response $response, $next) {
     $uri = $request->getUri();
     if($uri->getScheme() !== 'https') {
         // Map http to https
@@ -17,4 +17,4 @@ $app->add(function (Request $request, Response $response, $next) {
     }
 
     return $next($request, $response);
-});
+});*/
