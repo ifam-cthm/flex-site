@@ -108,7 +108,7 @@ export default {
       listaMenuAdministrador: [
         {
           title: "Setores",
-          path: ""
+          path: "ListarSetores"
         },
         {
           title: "Tipo de documentos",

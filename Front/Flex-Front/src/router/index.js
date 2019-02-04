@@ -16,6 +16,10 @@ import DocumentosVencimento from '@/components/DocumentosVencidos.vue'
 import BuscarDocumentos from '@/components/BuscarDocumentos.vue'
 /////////////////////////////////////////////////////////////
 import Dashboard from '@/components/Dashboard.vue'
+//////////////////////////////////////////////////////////////
+import CadastrarSetores from '@/components/CadastrarSetores.vue'
+import ListarSetores from '@/components/ListarSetores.vue'
+
 
 Vue.use(Router)
 
@@ -63,7 +67,7 @@ export default new Router({
     name: 'Menu',
     component: Menu,
     children: [{
-      path: "/Dashboard",
+      path: "/",
       name: 'Dashboard',
       component: Dashboard,
       beforeEnter(to, from, next) {
@@ -132,6 +136,31 @@ export default new Router({
       props: true,
       name: 'CadastrarUsuario2',
       component: CadastrarUsuario,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/ListaSetores',
+      name: 'ListaSetores',
+      component: ListaSetores,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/CadastrarSetor',
+      name: 'CadastrarSetor',
+      component: CadastrarSetor,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/CadastrarSetor/:id',
+      props: true,
+      name: 'CadastrarSetor2',
+      component: CadastrarSetor,
       beforeEnter(to, from, next) {
         verificarLogin(to, next)
       }
