@@ -142,25 +142,25 @@ export default new Router({
     },
     {
       path: '/ListaSetores',
-      name: 'ListaSetores',
-      component: ListaSetores,
+      name: 'ListarSetores',
+      component: ListarSetores,
       beforeEnter(to, from, next) {
         verificarLogin(to, next)
       }
     },
     {
-      path: '/CadastrarSetor',
-      name: 'CadastrarSetor',
-      component: CadastrarSetor,
+      path: '/CadastrarSetores',
+      name: 'CadastrarSetores',
+      component: CadastrarSetores,
       beforeEnter(to, from, next) {
         verificarLogin(to, next)
       }
     },
     {
-      path: '/CadastrarSetor/:id',
+      path: '/CadastrarSetores/:id',
       props: true,
-      name: 'CadastrarSetor2',
-      component: CadastrarSetor,
+      name: 'CadastrarSetores2',
+      component: CadastrarSetores,
       beforeEnter(to, from, next) {
         verificarLogin(to, next)
       }
