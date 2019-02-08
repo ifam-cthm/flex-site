@@ -2,7 +2,7 @@
   <v-app>
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>AtenÃ§Ã£o</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Atenção</v-card-title>
         <v-card-text>Erro ao cadastrar um novo documento. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -14,7 +14,7 @@
     <v-dialog v-model="dialogErro" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
-        <v-card-text>Erro ao acessar o serviÃ§os. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o serviços. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialogErro = !dialogErro">Ok</v-btn>
@@ -49,7 +49,7 @@
                     :items="itemsResponsaveis"
                     item-text="nome"
                     item-value="login"
-                    label="ResponsÃ¡vel"
+                    label="Responsável"
                   ></v-autocomplete>
                 </v-flex>
               </v-layout>
@@ -82,6 +82,13 @@
                     required
                   ></v-text-field>
                 </v-flex>
+                <div class="large-12 medium-12 small-12 cell">
+                  <label>
+                    File
+                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()">
+                  </label>
+                  <button v-on:click="submitFile()">Save your files where</button>
+                </div>
               </v-layout>
               <v-btn
                 v-if="cadastro"
@@ -107,6 +114,7 @@ export default {
       dialogErro: false,
       dialogErro1: false,
       cadastro: true,
+      file: "",
       title: "",
       documento: {
         id: "",
@@ -123,6 +131,40 @@ export default {
     };
   },
   methods: {
+    /*
+        Submits the file to the sgdb
+      */
+    submitFile() {
+      /*
+                Initialize the form data
+            */
+      let formData = new FormData();
+      /*
+                Add the form data we need to submit
+            */
+      formData.append("file", this.file);
+      /*
+          Make the request to the POST /single-file URL
+        */
+      axios
+        .post("/single-file", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(function() {
+          console.log("SUCCESS!!");
+        })
+        .catch(function() {
+          console.log("FAILURE!!");
+        });
+    },
+    /*
+        Handles a change on the file upload
+      */
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
     cadastrar() {
       if (
         this.documento.nome == "" ||
@@ -172,7 +214,6 @@ export default {
       }
     }
   },
-
   created: function() {
     if (this.$route.params.id) {
       this.title = "Editar documento";
