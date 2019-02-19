@@ -19,6 +19,9 @@ import Dashboard from '@/components/Dashboard.vue'
 //////////////////////////////////////////////////////////////
 import CadastrarSetores from '@/components/CadastrarSetores.vue'
 import ListarSetores from '@/components/ListarSetores.vue'
+/////////////////////////////////////////////////////////////
+import CadastrarTipos from '@/components/CadastrarTipos.vue'
+import ListarTipos from '@/components/ListarTipos.vue'
 
 
 Vue.use(Router)
@@ -165,7 +168,31 @@ export default new Router({
         verificarLogin(to, next)
       }
     },
-
+    {
+      path: '/ListaTipos',
+      name: 'ListarTipos',
+      component: ListarTipos,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/CadastrarTipos',
+      name: 'CadastrarTipos',
+      component: CadastrarTipos,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/CadastrarTipos/:id',
+      props: true,
+      name: 'CadastrarTipos2',
+      component: CadastrarTipos,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
     ]
   },
   ]

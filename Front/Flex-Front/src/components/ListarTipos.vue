@@ -6,7 +6,7 @@
         <v-card-text>Tem certeza que queres excluir este Setor?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="dialog = false">Não</v-btn>
+          <v-btn color="red darken-1" flat @click="dialog = false">NÃ£o</v-btn>
           <v-btn color="green darken-1" flat @click="deleteItem">Sim</v-btn>
         </v-card-actions>
       </v-card>
@@ -15,12 +15,13 @@
       <v-toolbar-title>Tipos de Documentos</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn color="primary" dark class="mb-2" @click="novo">Novo Setor</v-btn>
+      <v-btn color="primary" dark class="mb-2" @click="novo">Novo Tipo</v-btn>
     </v-toolbar>
     <v-data-table :headers="headers" :items="items" class="elevation-1">
       <template slot="items" slot-scope="props">
         <td>{{ props.item.nome }}</td>
         <td>{{ props.item.bloqueado }}</td>
+        <td>{{props.item.descricao}}</td>
         <td>
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="modalItem(props.item)">delete</v-icon>
@@ -42,16 +43,17 @@ export default {
       headers: [
         { text: "Nome", value: "nome" },
         { text: "Bloqueado", value: "bloqueado" },
-        { text: "Ações" }
+        { text: "Descrição", value: "descricao"},
+        { text: "AÃ§Ãµes" }
       ]
     };
   },
   methods: {
     novo: function() {
-      this.$router.push({ name: "CadastrarSetores" });
+      this.$router.push({ name: "CadastrarTipos" });
     },
     editItem: function(item) {
-      let url = "CadastrarSetores/" + item.id;
+      let url = "CadastrarTipos/" + item.id;
       this.$router.push(url);
     },
     modalItem: function(item) {
@@ -60,7 +62,7 @@ export default {
     },
     deleteItem: function() {
       axios
-        .delete("setor/" + this.item.id)
+        .delete("tipo/" + this.item.id)
         .then(response => {
           if (response.data) {
             this.carregar();
@@ -75,7 +77,7 @@ export default {
     },
     carregar: function() {
       axios
-        .get("setor")
+        .get("tipo")
         .then(response => {
           this.items = response.data;
         })

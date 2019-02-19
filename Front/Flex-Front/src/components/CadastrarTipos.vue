@@ -1,4 +1,4 @@
-<template>
+    <template>
   <v-app>
     <v-dialog v-model="dialog" width="500">
       <v-card>
@@ -26,7 +26,7 @@
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
 
-        <v-card-text>Erro ao cadastrar o setor.</v-card-text>
+        <v-card-text>Erro ao cadastrar o tipo.</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -37,12 +37,13 @@
     <div style="margin: 50px auto; width: 40%; text-align: center;">
       <span>{{title}}</span>
       <v-form ref="form">
-        <v-text-field v-model="setor.nome" label="Nome" required></v-text-field>
-        <input type="radio" id="1" value="1" v-model="setor.bloqueado">
+        <v-text-field v-model="tipo.nome" label="Nome" required></v-text-field>
+        <input type="radio" id="1" value="1" v-model="tipo.bloqueado">
         <label for="1">Bloqueado</label>
         <br>
-        <input type="radio" id="0" value="0" v-model="setor.bloqueado">
+        <input type="radio" id="0" value="0" v-model="tipo.bloqueado">
         <label for="0">Desbloqueado</label>
+        <v-text-field v-model="tipo.descricao" label="Descrição"></v-text-field>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -51,7 +52,7 @@
 </template>
 
 
-<script>
+    <script>
 import axios from "../axios/client.js";
 export default {
   data() {
@@ -62,7 +63,7 @@ export default {
       dialogErro3: false,
       title: "",
       cadastro: true,
-      setor: {
+      tipo: {
         nome: "",
         bloqueado: null,
         id: null
@@ -71,14 +72,14 @@ export default {
   },
   methods: {
     cadastrar() {
-      if (this.setor.nome == "" || this.setor.bloqueado == null) {
+      if (this.tipo.nome == "" || this.tipo.bloqueado == null) {
         this.dialogErro1 = true;
       } else {
         axios
-          .post("setor", this.setor)
+          .post("tipo", this.tipo)
           .then(response => {
             if (response.data) {
-              this.$router.push({ name: "ListarSetores" });
+              this.$router.push({ name: "ListarTipos" });
             } else {
               this.dialogErro3 = true;
             }
@@ -90,14 +91,14 @@ export default {
       }
     },
     alterar() {
-      if (this.setor.nome == "" || this.setor.bloqueado == null) {
+      if (this.tipo.nome == "" || this.tipo.bloqueado == null) {
         this.dialogErro1 = true;
       } else {
         axios
-          .put("setor/" + this.setor.id, this.setor)
+          .put("tipo/" + this.tipo.id, this.tipo)
           .then(response => {
             if (response.data) {
-              this.$router.push({ name: "ListarSetores" });
+              this.$router.push({ name: "ListarTipos" });
             } else {
               this.dialogErro3 = true;
             }
@@ -111,7 +112,7 @@ export default {
   },
   created: function() {
     axios
-      .get("setores")
+      .get("tipos")
       .then(response => {
         this.items = response.data;
       })
@@ -119,16 +120,16 @@ export default {
         this.dialog = true;
       });
     if (this.$route.params.id) {
-      this.title = "Editar setor";
+      this.title = "Editar tipo";
       this.cadastro = false;
       axios
-        .get("setor/" + this.$route.params.id)
+        .get("tipo/" + this.$route.params.id)
         .then(response => {
-          this.setor = response.data[0];
+          this.tipo = response.data[0];
         })
         .catch(e => {});
     } else {
-      this.title = "Novo setor";
+      this.title = "Novo tipo";
       this.cadastro = true;
     }
   }

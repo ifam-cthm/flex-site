@@ -112,7 +112,7 @@ export default {
         },
         {
           title: "Tipo de documentos",
-          path: ""
+          path: "ListarTipos"
         },
         {
           title: "Documentos",
