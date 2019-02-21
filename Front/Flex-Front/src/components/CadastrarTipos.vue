@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
-        <v-card-text>Erro ao acessar o servi?os. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o serviços. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialog = false">Ok</v-btn>
@@ -38,12 +38,7 @@
       <span>{{title}}</span>
       <v-form ref="form">
         <v-text-field v-model="tipo.nome" label="Nome" required></v-text-field>
-        <input type="radio" id="1" value="1" v-model="tipo.bloqueado">
-        <label for="1">Bloqueado</label>
-        <br>
-        <input type="radio" id="0" value="0" v-model="tipo.bloqueado">
-        <label for="0">Desbloqueado</label>
-        <v-text-field v-model="tipo.descricao" label="DescriÃ§Ã£o"></v-text-field>
+        <v-text-field v-model="tipo.descricao" label="Descrição"></v-text-field>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -72,11 +67,11 @@ export default {
   },
   methods: {
     cadastrar() {
-      if (this.tipo.nome == "" || this.tipo.bloqueado == null) {
+      if (this.tipo.nome == "") {
         this.dialogErro1 = true;
       } else {
         axios
-          .post("tipo", this.tipo)
+          .post("tipos", this.tipo)
           .then(response => {
             if (response.data) {
               this.$router.push({ name: "ListarTipos" });
@@ -95,7 +90,7 @@ export default {
         this.dialogErro1 = true;
       } else {
         axios
-          .put("tipo/" + this.tipo.id, this.tipo)
+          .put("tipos/" + this.tipo.id, this.tipo)
           .then(response => {
             if (response.data) {
               this.$router.push({ name: "ListarTipos" });
@@ -123,7 +118,7 @@ export default {
       this.title = "Editar tipo";
       this.cadastro = false;
       axios
-        .get("tipo/" + this.$route.params.id)
+        .get("tipos/" + this.$route.params.id)
         .then(response => {
           this.tipo = response.data[0];
         })

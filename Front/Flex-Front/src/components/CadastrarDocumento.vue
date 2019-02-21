@@ -123,7 +123,8 @@ export default {
         tipo: "",
         dataVencimento: "",
         bloqueado: false,
-        responsavel: ""
+        responsavel: "",
+        documento: ""
       },
       itemsSetores: [],
       itemsTipos: [],

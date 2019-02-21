@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
-        <v-card-text>Erro ao acessar o servi?os. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o serviços. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialog = false">Ok</v-btn>
@@ -38,11 +38,6 @@
       <span>{{title}}</span>
       <v-form ref="form">
         <v-text-field v-model="setor.nome" label="Nome" required></v-text-field>
-        <input type="radio" id="1" value="1" v-model="setor.bloqueado">
-        <label for="1">Bloqueado</label>
-        <br>
-        <input type="radio" id="0" value="0" v-model="setor.bloqueado">
-        <label for="0">Desbloqueado</label>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -71,7 +66,7 @@ export default {
   },
   methods: {
     cadastrar() {
-      if (this.setor.nome == "" || this.setor.bloqueado == null) {
+      if (this.setor.nome == "") {
         this.dialogErro1 = true;
       } else {
         axios
@@ -110,14 +105,6 @@ export default {
     }
   },
   created: function() {
-    axios
-      .get("setores")
-      .then(response => {
-        this.items = response.data;
-      })
-      .catch(e => {
-        this.dialog = true;
-      });
     if (this.$route.params.id) {
       this.title = "Editar setor";
       this.cadastro = false;
