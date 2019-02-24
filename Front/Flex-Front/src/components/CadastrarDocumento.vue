@@ -85,7 +85,7 @@
                 <div class="large-12 medium-12 small-12 cell">
                   <label>
                     File
-                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()">
+                    <input type="file" id="file" ref="file" @change="handleFileUpload()">
                   </label>
                   <button v-on:click="submitFile()">Save your files where</button>
                 </div>
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+var file;
 import axios from "../axios/client.js";
 export default {
   data() {
@@ -124,7 +125,8 @@ export default {
         dataVencimento: "",
         bloqueado: false,
         responsavel: "",
-        documento: ""
+        arquivo: "",
+        nome_arquivo: ""
       },
       itemsSetores: [],
       itemsTipos: [],
@@ -165,6 +167,16 @@ export default {
       */
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
+      this.documento.nome_arquivo = this.file.name;
+      var reader = new FileReader();
+      reader.readAsBinaryString(this.file);
+
+      reader.onload = function() {
+        file = btoa(reader.result);
+      };
+      reader.onerror = function() {
+        console.log("there are some problems");
+      };
     },
     cadastrar() {
       if (
@@ -176,6 +188,7 @@ export default {
       ) {
         dialogErro = true;
       } else {
+        this.documento.arquivo = file;
         axios
           .post("documento", this.documento)
           .then(response => {
@@ -191,6 +204,7 @@ export default {
       }
     },
     alterar() {
+      this.documento.arquivo = file;
       if (
         this.documento.nome == "" ||
         this.documento.setor == "" ||
@@ -230,7 +244,7 @@ export default {
       this.title = "Novo documento";
     }
     axios
-      .get("setores")
+      .get("setor")
       .then(response => {
         this.itemsSetores = response.data;
       })

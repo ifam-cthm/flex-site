@@ -25,6 +25,16 @@
         <td>{{ props.item.responsavel }}</td>
         <td>{{ props.item.dataCadastrado }}</td>
         <td>{{ props.item.dataVencimento }}</td>
+        <td v-if="props.item.arquivo != null && props.item.arquivo != ''">
+          <a
+            :download="props.item.nome_arquivo"
+            :href=" 'data:application/octet-stream;base64,' + props.item.arquivo"
+            :title="'Download do arquivo - ' + props.item.nome_arquivo"
+          >
+            <v-icon>archive</v-icon>
+          </a>
+        </td>
+        <td v-else>-</td>
         <td>
           <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
           <v-icon small @click="modalItem(props.item)">delete</v-icon>
@@ -50,11 +60,16 @@ export default {
         { text: "Responsável", value: "responsavel" },
         { text: "Cadastrado", value: "dataCadastrado" },
         { text: "Vencimento", value: "dataVencimento" },
+        { text: "Download" },
         { text: "Ações" }
       ]
     };
   },
   methods: {
+    downloadFile: function(item) {
+      console.log(item);
+      download(item.arquivo, "git.txt", "text/plain");
+    },
     novo: function() {
       this.$router.push({ name: "CadastrarDocumento" });
     },

@@ -66,6 +66,16 @@
         <td>{{ props.item.responsavel }}</td>
         <td>{{ props.item.cadastrado }}</td>
         <td>{{ props.item.vencimento }}</td>
+        <td v-if="props.item.arquivo != null && props.item.arquivo != ''">
+          <a
+            :download="props.item.nome_arquivo"
+            :href=" 'data:application/octet-stream;base64,' + props.item.arquivo"
+            :title="'Download do arquivo - ' + props.item.nome_arquivo"
+          >
+            <v-icon>archive</v-icon>
+          </a>
+        </td>
+        <td v-else>-</td>
       </template>
     </v-data-table>
   </div>
@@ -83,7 +93,8 @@ export default {
         { text: "Setor", value: "setor" },
         { text: "Responsavel", value: "responsavel" },
         { text: "Cadastrado", value: "cadastrado" },
-        { text: "Vencimento", value: "vencimento" }
+        { text: "Vencimento", value: "vencimento" },
+        { text: "Download" }
       ],
       itemsDiferenca: [
         { value: "1", text: "1 dia" },

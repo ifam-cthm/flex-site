@@ -42,15 +42,18 @@ function get_grafico_documentosXtipos($db)
 
 function documento_cadastro($db, $documento)
 {
-    $str = $db->prepare("INSERT INTO documento (nome, idSetor, idTipo, dataCadastrado, dataVencimento, bloqueado) VALUES 
+    $str = $db->prepare("INSERT INTO documento (nome, idSetor, idTipo, dataCadastrado, 
+        dataVencimento, bloqueado, arquivo, nome_arquivo) VALUES 
         (:nome, :idSetor, :idTipo, CONVERT(DATE, :dataCadastrado,103), 
-        :dataVencimento,  0)");
+        :dataVencimento,  0, :arquivo, :nome_arquivo)");
     $str->bindParam("nome", $documento["nome"]);
     $str->bindParam("idSetor", $documento["setor"]);
     $str->bindParam("idTipo", $documento["tipo"]);
     $data = date('d/m/Y');
     $str->bindParam("dataCadastrado", $data);
     $str->bindParam("dataVencimento", $documento["dataVencimento"]);
+    $str->bindParam("arquivo", $documento["arquivo"]);
+    $str->bindParam("nome_arquivo", $documento["nome_arquivo"]);
     $str->execute();
 
     $str = $db->prepare("SELECT TOP 1 * FROM documento ORDER BY id DESC");
@@ -76,7 +79,7 @@ function documento_atualizacao($db, $documento)
 {
     $str = $db->prepare("UPDATE documento SET nome = :nome, 
     idSetor = :idSetor, idTipo = :idTipo, dataCadastrado = :dataCadastrado, 
-    dataVencimento = :dataVencimento
+    dataVencimento = :dataVencimento, arquivo = :arquivo, nome_arquivo = :nome_arquivo
     WHERE id = :id");
     $str->bindParam("id", $documento["id"]);
     $str->bindParam("nome", $documento["nome"]);
@@ -85,6 +88,8 @@ function documento_atualizacao($db, $documento)
     $data = date('d/m/Y');
     $str->bindParam("dataCadastrado", $data);
     $str->bindParam("dataVencimento", $documento["dataVencimento"]);
+    $str->bindParam("arquivo", $documento["arquivo"]);
+    $str->bindParam("nome_arquivo", $documento["nome_arquivo"]);
     $str->execute();
 
     $str = $db->prepare("SELECT * FROM responsavel WHERE idDocumento = :idDocumento AND dateSaida IS NULL");
@@ -156,7 +161,7 @@ function get_documentos_encontrados($db, $filtro)
 
 function get_documentos($db)
 {
-    $str = $db->prepare("SELECT d.id, d.nome nome, s.nome setor, t.nome tipo, 
+    $str = $db->prepare("SELECT d.id, d.nome_arquivo, d.nome nome, d.arquivo, s.nome setor, t.nome tipo, 
     CONVERT(NVARCHAR, dataCadastrado, 103) dataCadastrado,
     CONVERT(NVARCHAR, dataVencimento, 103) dataVencimento, u.nome responsavel FROM documento d 
     INNER JOIN setor s on s.id = d.idSetor
@@ -171,7 +176,7 @@ function get_documentos($db)
 
 function get_documento_byId($db, $id)
 {
-    $str = $db->prepare("SELECT d.id, d.nome nome, s.id setor, t.id tipo,  
+    $str = $db->prepare("SELECT d.id, d.nome_arquivo, d.arquivo, d.nome nome, s.id setor, t.id tipo,  
     CONVERT(NVARCHAR, dataCadastrado, 120) dataCadastrado,
     CONVERT(NVARCHAR, dataVencimento, 120) dataVencimento, 
     u.login responsavel FROM documento d 
@@ -193,3 +198,4 @@ function documento_delete($db, $id)
     $str->execute();
     return "ok!";
 }
+
