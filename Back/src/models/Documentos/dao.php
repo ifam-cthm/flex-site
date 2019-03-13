@@ -199,3 +199,14 @@ function documento_delete($db, $id)
     return "ok!";
 }
 
+function procurar_documentos_proximo_vencimento($db){
+    $str = $db->prepare("SELECT u.email, u.nome as nomeUsuario, d.nome as documento from documento d
+   INNER JOIN responsavel r on r.idDocumento = d.id
+   INNER JOIN usuario u on u.login = r.loginUsuario 
+   where DATEDIFF(day, d.dataVencimento, GETDATE()) < 5  AND d.bloqueado!=1");
+   /*
+   $data = date('d/m/Y');  
+   $str->bindParam("dataVencimento", $data);*/
+   $retorno = $str->fetchAll();
+   return $retorno;
+}

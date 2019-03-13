@@ -4,6 +4,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 require 'dao.php';
+require '../util/mail/email.php';
 // Routes
 
 $app->get("/get_grafico_documentosXusuarios", function ($request, $response, $args) {
@@ -53,5 +54,20 @@ $app->put("/documentos/{id}", function ($request, $response, $args) {
 
 $app->delete("/documentos/{id}", function ($request, $response, $args) {
     $retorno = documento_delete($this->db, $args["id"]);
+    return $this->response->withJson($retorno);
+});
+
+
+
+$app->get("/documentos/vencimento", function ($request, $response, $args) {
+    $retorno = exec('0 8 * * * ' + procurar_documentos_proximo_vencimento($this->db));
+    foreach ($retorno as $aux) {
+        email(
+            $aux["usuario.email"],
+            $aux["usuario.nome"],
+            "Documento perto de vencer",
+            "O documento" . $aux["documento.nome"] . "está há" . "" . "de vencer"
+        );
+    }
     return $this->response->withJson($retorno);
 });

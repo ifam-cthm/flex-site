@@ -43,7 +43,6 @@ $app->get('/iniciar', function ($request, $response) {
     return $this->response->withJson($retorno);
 });
 
-
 $app->post('/login', function ($request, $response, $args) {
     $login = $request->getParsedBody();
     $retorno = login($this->db, $login);
