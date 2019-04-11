@@ -24,6 +24,8 @@ require __DIR__ . '/../src/dependencies.php';
 require __DIR__ . '/../src/middleware.php';
 
 
+//register emIL
+require __DIR__ . '/../src/utils/mail/email.php';
 // Register cors
 require __DIR__ . '/../src/cors.php';
 require __DIR__ . '/../src/models/Usuario/routes.php';

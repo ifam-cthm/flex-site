@@ -47,7 +47,7 @@ function verificarLogin(to, next) {
 export default new Router({
   mode: 'history',
   relative: true,
-  base: '/flex-site/flex',
+  base: '/flex',
   routes: [{
     path: "*",
     redirect: "/Dashboard"
@@ -60,10 +60,7 @@ export default new Router({
   {
     path: '/CadastrarAdministrador',
     name: 'CadastrarAdministrador',
-    component: CadastrarAdministrador,
-    beforeEnter(to, from, next) {
-      verificarLogin(to, next)
-    }
+    component: CadastrarAdministrador
   },
   {
     path: '/Ged',
