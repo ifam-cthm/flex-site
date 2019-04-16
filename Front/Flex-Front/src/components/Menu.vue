@@ -136,7 +136,7 @@ export default {
       listaMenuNotificacoes: [
         {
           title: "Configurar Notificações",
-          path: ""
+          path: "ConfigurarNotificacoes"
         },
         {
           title: "Notificações",

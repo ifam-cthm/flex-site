@@ -7,7 +7,23 @@ function get_responsaveis($db)
     $str->execute();
     return $str->fetchAll();
 }
-
+function salvar_filtros($db, $filtros){
+    $str = $db->prepare("UPDATE usuario SET isNotificationModal = :isNotificationModal, isNotificationEmail = :isNotificationEmail
+    timeNotificationModal = :timeNotificationModal WHERE login=:login");
+    $str->bindParam("isNotificationModal", $filtros["isNotificationModal"]);
+    $str->bindParam("isNotificationEmail", $filtros["isNotificationEmail"]);
+    $str->bindParam("timeNotificationModal", $filtros["timeNotificationModal"]);
+    $str->bindParam("login", $filtros["login"]);
+    $str->execute();
+    $str = $db->prepare("SELECT timeNotificationModal FROM usuario u WHERE u.login=:login");
+    $str->bindParam("login", $filtros["login"]);
+    $retorno = $str->fetchAll();
+    if(count($retorno)!=0){
+        return $retorno[0];
+    }else{
+        return array();
+    }
+}
 function iniciar($db)
 {
     $str = $db->prepare("SELECT count(*) AS setores FROM setor");
