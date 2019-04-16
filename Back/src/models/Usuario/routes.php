@@ -11,7 +11,6 @@ $app->get("/usuario", function ($request, $response, $args) {
 });
 $app->post("/saveConfig", function($request, $response, $args){
     $filtros = $request->getParsedBody();
-    echo $filtros.login;
     $retorno = salvar_filtros($this->db, $filtros);
     return $this->response->withJson($retorno);
 });

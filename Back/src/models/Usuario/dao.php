@@ -9,7 +9,7 @@ function get_responsaveis($db)
 }
 function salvar_filtros($db, $filtros){
     $str = $db->prepare("UPDATE usuario SET isNotificationModal = :isNotificationModal, isNotificationEmail = :isNotificationEmail
-    timeNotificationModal = :timeNotificationModal WHERE login=:login");
+    timeNotificationModal = :timeNotificationModal, timeNotificationEmail = :timeNotificationModal WHERE login=:login");
     $str->bindParam("isNotificationModal", $filtros["isNotificationModal"]);
     $str->bindParam("isNotificationEmail", $filtros["isNotificationEmail"]);
     $str->bindParam("timeNotificationModal", $filtros["timeNotificationModal"]);
