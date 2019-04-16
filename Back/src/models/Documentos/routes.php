@@ -59,7 +59,7 @@ $app->delete("/documentos/{id}", function ($request, $response, $args) {
 
 
 $app->get("/documentos_vencimento", function ($request, $response, $args) {
-    $retorno = exec('0 8 * * * ' + procurar_documentos_proximo_vencimento($this->db));
+    $retorno = procurar_documentos_proximo_vencimento($this->db);
     foreach ($retorno as $aux) {
         email(
             $aux["usuario.email"],

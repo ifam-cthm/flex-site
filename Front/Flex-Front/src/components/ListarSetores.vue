@@ -11,6 +11,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+        <v-dialog v-model="dialogErro1" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
+
+        <v-card-text>Você não tem acesso a essa página entre em contato com os Administradores para saber mais</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" flat @click="dialogErro1= !dialogErro1">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogRecuperar" persistent max-width="290">
       <v-card>
         <v-card-title class="headline">Recuperar Setor?</v-card-title>
@@ -55,6 +67,7 @@ export default {
     return {
       items: [],
       item: {},
+      usuario:{},
       dialog: false,
       dialogRecuperar: false,
       headers: [
@@ -120,7 +133,11 @@ export default {
     }
   },
   created: function() {
-    this.carregar();
+    let usuario = JSON.parse(localStorage.getItem("flex-site_cthm"));
+    this.usuario = usuario
+//    if(this.usuario.administrador==true)
+      this.carregar();
+  //  else
   }
 };
 </script>

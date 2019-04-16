@@ -48,6 +48,16 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-group>
+                <v-list-group no-action prepend-icon="insert_drive_file">
+          <v-list-tile slot="activator">
+            <v-list-tile-title>Notificações</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile sub-group v-for="item in listaMenuNotificacoes" :key="item.nome">
+            <v-list-tile-title>
+              <router-link :to="{name: item.path}">{{item.title}}</router-link>
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
         <!-- <v-list-tile v-for="item in listaMenu" :key="item.nome">
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
@@ -97,7 +107,7 @@ export default {
         {
           icon: "insert_drive_file",
           title: "Documentos",
-          path: "DocumentosVencidos"
+          path: "DocumentosVencidos",
         },
         {
           icon: "insert_drive_file",
@@ -121,6 +131,16 @@ export default {
         {
           title: "Usuarios",
           path: "ListaUsuarios"
+        }
+      ],
+      listaMenuNotificacoes: [
+        {
+          title: "Configurar Notificações",
+          path: ""
+        },
+        {
+          title: "Notificações",
+          path: ""
         }
       ]
     };

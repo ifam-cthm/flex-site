@@ -22,7 +22,9 @@ import ListarSetores from '@/components/ListarSetores.vue'
 /////////////////////////////////////////////////////////////
 import CadastrarTipos from '@/components/CadastrarTipos.vue'
 import ListarTipos from '@/components/ListarTipos.vue'
-
+/////////////////////////////////////////////////////////////
+import ConfigurarNotificacoes from '@/components/ConfigurarNotificacoes.vue'
+import VerNotificacoes from '@/components/VerNotificacoes.vue'
 
 Vue.use(Router)
 
@@ -186,6 +188,22 @@ export default new Router({
       props: true,
       name: 'CadastrarTipos2',
       component: CadastrarTipos,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/ConfigurarNotificacoes',
+      name: 'ConfigurarNotificacoes',
+      component: ConfigurarNotificacoes,
+      beforeEnter(to, from, next) {
+        verificarLogin(to, next)
+      }
+    },
+    {
+      path: '/VerNotificacoes',
+      name: 'VerNotificacoes',
+      component: VerNotificacoes,
       beforeEnter(to, from, next) {
         verificarLogin(to, next)
       }

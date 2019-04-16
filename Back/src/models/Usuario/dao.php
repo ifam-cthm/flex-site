@@ -62,12 +62,14 @@ function usuario_cadastroAdministrador($db, $usuario)
 
 function usuario_cadastro($db, $usuario)
 {
-    $str = $db->prepare("INSERT INTO usuario (nome, login, senha, idSetor) VALUES 
-        (:nome, :login, :senha, :idSetor)");
+    $str = $db->prepare("INSERT INTO usuario (nome, login, senha, idSetor, email, administrador) VALUES 
+        (:nome, :login, :senha, :idSetor, :email, :administrador)");
     $str->bindParam("nome", $usuario["nome"]);
     $str->bindParam("login", $usuario["login"]);
     $str->bindParam("senha", $usuario["senha"]);
     $str->bindParam("idSetor", $usuario["idSetor"]);
+    $str->bindParam("email", $usuario["email"]);
+    $str->bindParam("administrador", $usuario["administrador"]);
     $str->execute();
 
     $str = $db->prepare("SELECT u.nome, u.login FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
