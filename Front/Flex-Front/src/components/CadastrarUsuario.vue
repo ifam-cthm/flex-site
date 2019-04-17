@@ -55,16 +55,17 @@
         <v-text-field v-model="usuario.nome" label="Nome" required></v-text-field>
         <v-text-field v-if="cadastro" v-model="usuario.login" label="Login" required></v-text-field>
         <v-text-field v-else v-model="usuario.login" disabled label="Login" required></v-text-field>
+        <v-text-field v-model="usuario.email" label="Email" type="email" required></v-text-field>
         <v-text-field v-model="usuario.senha" label="Senha" type="password" required></v-text-field>
         <v-text-field v-model="senha" label="Confirmar Senha" type="password" required></v-text-field>
         <v-select
-          
           v-model="usuario.idSetor"
           :items="items"
           item-text="nome"
           item-value="id"
           label="Setor"
         ></v-select>
+        <input type="radio" v-model="usuario.administrador" value=1 id="admin"><label for="admin">Administrador</label><br>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -90,6 +91,8 @@ export default {
         login: "",
         nome: "",
         senha: "",
+        email: "",
+        administrador: "",
         idSetor: ""
       }
     };
@@ -101,6 +104,7 @@ export default {
         this.usuario.nome == "" ||
         this.usuario.senha == "" ||
         this.senha == "" ||
+        this.email== "" ||
         this.usuario.setor == ""
       ) {
         this.dialogErro1 = true;
@@ -126,7 +130,8 @@ export default {
       if (
         this.usuario.login == "" ||
         this.usuario.nome == "" ||
-        this.usuario.setor == ""
+        this.usuario.setor == "" ||
+        this.email== ""
       ) {
         this.dialogErro1 = true;
       } else if (this.senha != "" && this.senha != this.usuario.senha) {
@@ -151,7 +156,7 @@ export default {
 
   created: function() {
     axios
-      .get("setores")
+      .get("setor")
       .then(response => {
         this.items = response.data;
       })

@@ -4,7 +4,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 require 'dao.php';
-
 // Routes
 
 $app->get("/get_grafico_documentosXusuarios", function ($request, $response, $args) {
@@ -59,8 +58,8 @@ $app->delete("/documentos/{id}", function ($request, $response, $args) {
 
 
 
-$app->get("/documentos1/vencimento", function ($request, $response, $args) {
-    $retorno = exec('0 8 * * * ' + procurar_documentos_proximo_vencimento($this->db));
+$app->get("/documentos_vencimento", function ($request, $response, $args) {
+    $retorno = procurar_documentos_proximo_vencimento($this->db);
     foreach ($retorno as $aux) {
         email(
             $aux["usuario.email"],

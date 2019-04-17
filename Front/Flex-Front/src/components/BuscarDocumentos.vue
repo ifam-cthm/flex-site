@@ -199,7 +199,7 @@ export default {
     this.data = ano1 + "-" + mes1 + "-" + dia1;
 
     axios
-      .get("setores")
+      .get("setor")
       .then(response => {
         this.itemsSetor = response.data;
       })

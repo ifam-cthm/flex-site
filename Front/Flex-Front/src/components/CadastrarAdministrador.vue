@@ -119,7 +119,7 @@ export default {
   },
   created: function() {
     axios
-      .get("setores")
+      .get("setor")
       .then(response => {
         this.items = response.data;
       })
