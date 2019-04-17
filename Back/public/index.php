@@ -23,7 +23,7 @@ require __DIR__ . '/../src/dependencies.php';
 // Register middleware
 require __DIR__ . '/../src/middleware.php';
 
-require __DIR__ . '/../src/utils/mail/email.php';
+//require __DIR__ . '/../src/utils/mail/email.php';
 
 
 //register emIL

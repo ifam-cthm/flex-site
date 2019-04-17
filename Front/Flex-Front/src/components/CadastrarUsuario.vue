@@ -24,6 +24,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogErro3" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
+
+        <v-card-text>O sistema necessita pelo menos um administrador!</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" flat @click="dialogErro3 = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogErro2" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
@@ -65,7 +77,9 @@
           item-value="id"
           label="Setor"
         ></v-select>
-        <input type="radio" v-model="usuario.administrador" value=1 id="admin"><label for="admin">Administrador</label><br>
+        <input type="checkbox" v-model="usuario.administrador" id="admin">
+        <label for="admin">Administrador</label>
+        <br>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -104,7 +118,7 @@ export default {
         this.usuario.nome == "" ||
         this.usuario.senha == "" ||
         this.senha == "" ||
-        this.email== "" ||
+        this.email == "" ||
         this.usuario.setor == ""
       ) {
         this.dialogErro1 = true;
@@ -131,19 +145,33 @@ export default {
         this.usuario.login == "" ||
         this.usuario.nome == "" ||
         this.usuario.setor == "" ||
-        this.email== ""
+        this.email == ""
       ) {
         this.dialogErro1 = true;
       } else if (this.senha != "" && this.senha != this.usuario.senha) {
         this.dialogErro2 = true;
       } else {
         axios
-          .put("usuario/" + this.usuario.login, this.usuario)
+          .get("verificarExistADM")
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListaUsuarios" });
-            } else {
+            if (response.data.length <= 1 && !this.usuario.administrador) {
               this.dialogErro3 = true;
+              this.usuario.administrador = true;
+              return;
+            } else {
+              axios
+                .put("usuario/" + this.usuario.login, this.usuario)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListaUsuarios" });
+                  } else {
+                    this.dialogErro3 = true;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialog = true;
+                });
             }
           })
           .catch(e => {
@@ -170,6 +198,11 @@ export default {
         .get("usuario/" + this.$route.params.id)
         .then(response => {
           this.usuario = response.data[0];
+          if (this.usuario.administrador == 1) {
+            this.usuario.administrador = true;
+          } else {
+            this.usuario.administrador = false;
+          }
         })
         .catch(e => {});
     } else {

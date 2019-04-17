@@ -20,7 +20,7 @@
         </v-layout>
       </v-img>
       <v-list>
-        <v-list-group no-action prepend-icon="create">
+        <v-list-group v-if="usuario.administrador == '1'" no-action prepend-icon="create">
           <v-list-tile slot="activator">
             <v-list-tile-title>Cadastros</v-list-tile-title>
           </v-list-tile>
@@ -48,9 +48,9 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-group>
-                <v-list-group no-action prepend-icon="insert_drive_file">
+        <v-list-group no-action prepend-icon="insert_drive_file">
           <v-list-tile slot="activator">
-            <v-list-tile-title>Notificações</v-list-tile-title>
+            <v-list-tile-title>NotificaÃ§Ãµes</v-list-tile-title>
           </v-list-tile>
           <v-list-tile sub-group v-for="item in listaMenuNotificacoes" :key="item.nome">
             <v-list-tile-title>
@@ -87,7 +87,7 @@
       <router-view style="background: white;margin: 18px"/>
     </v-content>
     <v-footer :fixed="fixed" class="footer" app>
-      <span>Copyright {{new Date().getFullYear()}} Â© Flex Industries. Todos os direitos reservados.</span>
+      <span>Copyright {{new Date().getFullYear()}} Ã‚Â© Flex Industries. Todos os direitos reservados.</span>
     </v-footer>
   </v-app>
 </template>
@@ -97,7 +97,7 @@
 export default {
   data() {
     return {
-      usuario:{},
+      usuario: {},
       drawer: false,
       clipped: false,
       drawer: false,
@@ -107,7 +107,7 @@ export default {
         {
           icon: "insert_drive_file",
           title: "Documentos",
-          path: "DocumentosVencidos",
+          path: "DocumentosVencidos"
         },
         {
           icon: "insert_drive_file",
@@ -135,11 +135,11 @@ export default {
       ],
       listaMenuNotificacoes: [
         {
-          title: "Configurar Notificações",
+          title: "Configurar NotificaÃ§Ãµes",
           path: "ConfigurarNotificacoes"
         },
         {
-          title: "Notificações",
+          title: "NotificaÃ§Ãµes",
           path: ""
         }
       ]
@@ -148,14 +148,14 @@ export default {
   methods: {
     sair: function() {
       localStorage.setItem("flex-site_cthm", null);
-      this.$router.push({name: 'Login'})
+      this.$router.push({ name: "Login" });
     }
   },
-  created: function(){
+  created: function() {
     let usuario = JSON.parse(localStorage.getItem("flex-site_cthm"));
-    this.usuario = usuario
+    this.usuario = usuario;
+    console.log(this.usuario);
   }
-
 };
 </script>
 

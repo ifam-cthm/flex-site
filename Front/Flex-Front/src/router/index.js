@@ -51,164 +51,164 @@ export default new Router({
   relative: true,
   base: '/flex',
   routes: [{
-    path: "*",
-    redirect: "/Dashboard"
-  },
-  {
-    path: '/',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/CadastrarAdministrador',
-    name: 'CadastrarAdministrador',
-    component: CadastrarAdministrador
-  },
-  {
-    path: '/Ged',
-    name: 'Menu',
-    component: Menu,
-    children: [{
-      path: "/",
-      name: 'Dashboard',
-      component: Dashboard,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
+      path: "*",
+      redirect: "/Dashboard"
     },
     {
-      path: '/DocumentosVencidos',
-      name: 'DocumentosVencidos',
-      component: DocumentosVencimento,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
+      path: '/',
+      name: 'Login',
+      component: Login
     },
     {
-      path: '/BuscaDocumentos',
-      name: 'BuscaDocumentos',
-      component: BuscarDocumentos,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
+      path: '/CadastrarAdministrador',
+      name: 'CadastrarAdministrador',
+      component: CadastrarAdministrador
     },
     {
-      path: '/ListaDocumentos',
-      name: 'ListaDocumentos',
-      component: ListaDocumento,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
+      path: '/Ged',
+      name: 'Menu',
+      component: Menu,
+      children: [{
+          path: "/",
+          name: 'Dashboard',
+          component: Dashboard,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/DocumentosVencidos',
+          name: 'DocumentosVencidos',
+          component: DocumentosVencimento,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/BuscaDocumentos',
+          name: 'BuscaDocumentos',
+          component: BuscarDocumentos,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/ListaDocumentos',
+          name: 'ListaDocumentos',
+          component: ListaDocumento,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarDocumento',
+          name: 'CadastrarDocumento',
+          component: CadastrarDocumento,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarDocumento/:id',
+          props: true,
+          name: 'CadastrarDocumento2',
+          component: CadastrarDocumento,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/ListaUsuarios',
+          name: 'ListaUsuarios',
+          component: ListaUsuario,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarUsuario',
+          name: 'CadastrarUsuario',
+          component: CadastrarUsuario,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarUsuario/:id',
+          props: true,
+          name: 'CadastrarUsuario2',
+          component: CadastrarUsuario,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/ListaSetores',
+          name: 'ListarSetores',
+          component: ListarSetores,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarSetores',
+          name: 'CadastrarSetores',
+          component: CadastrarSetores,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarSetores/:id',
+          props: true,
+          name: 'CadastrarSetores2',
+          component: CadastrarSetores,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/ListaTipos',
+          name: 'ListarTipos',
+          component: ListarTipos,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarTipos',
+          name: 'CadastrarTipos',
+          component: CadastrarTipos,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarTipos/:id',
+          props: true,
+          name: 'CadastrarTipos2',
+          component: CadastrarTipos,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/ConfigurarNotificacoes',
+          name: 'ConfigurarNotificacoes',
+          component: ConfigurarNotificacoes,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/VerNotificacoes',
+          name: 'VerNotificacoes',
+          component: VerNotificacoes,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+      ]
     },
-    {
-      path: '/CadastrarDocumento',
-      name: 'CadastrarDocumento',
-      component: CadastrarDocumento,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarDocumento/:id',
-      props: true,
-      name: 'CadastrarDocumento2',
-      component: CadastrarDocumento,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/ListaUsuarios',
-      name: 'ListaUsuarios',
-      component: ListaUsuario,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarUsuario',
-      name: 'CadastrarUsuario',
-      component: CadastrarUsuario,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarUsuario/:id',
-      props: true,
-      name: 'CadastrarUsuario2',
-      component: CadastrarUsuario,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/ListaSetores',
-      name: 'ListarSetores',
-      component: ListarSetores,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarSetores',
-      name: 'CadastrarSetores',
-      component: CadastrarSetores,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarSetores/:id',
-      props: true,
-      name: 'CadastrarSetores2',
-      component: CadastrarSetores,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/ListaTipos',
-      name: 'ListarTipos',
-      component: ListarTipos,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarTipos',
-      name: 'CadastrarTipos',
-      component: CadastrarTipos,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/CadastrarTipos/:id',
-      props: true,
-      name: 'CadastrarTipos2',
-      component: CadastrarTipos,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/ConfigurarNotificacoes',
-      name: 'ConfigurarNotificacoes',
-      component: ConfigurarNotificacoes,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    {
-      path: '/VerNotificacoes',
-      name: 'VerNotificacoes',
-      component: VerNotificacoes,
-      beforeEnter(to, from, next) {
-        verificarLogin(to, next)
-      }
-    },
-    ]
-  },
   ]
 })

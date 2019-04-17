@@ -7,7 +7,8 @@ function get_responsaveis($db)
     $str->execute();
     return $str->fetchAll();
 }
-function salvar_filtros($db, $filtros){
+function salvar_filtros($db, $filtros)
+{
     $str = $db->prepare("UPDATE usuario SET isNotificationModal = :isNotificationModal, isNotificationEmail = :isNotificationEmail
     timeNotificationModal = :timeNotificationModal, timeNotificationEmail = :timeNotificationModal WHERE login=:login");
     $str->bindParam("isNotificationModal", $filtros["isNotificationModal"]);
@@ -18,9 +19,9 @@ function salvar_filtros($db, $filtros){
     $str = $db->prepare("SELECT timeNotificationModal FROM usuario u WHERE u.login=:login");
     $str->bindParam("login", $filtros["login"]);
     $retorno = $str->fetchAll();
-    if(count($retorno)!=0){
+    if (count($retorno) != 0) {
         return $retorno[0];
-    }else{
+    } else {
         return array();
     }
 }
@@ -41,7 +42,7 @@ function iniciar($db)
 
 function login($db, $login)
 {
-    $str = $db->prepare("SELECT u.nome, u.login, u.email FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
+    $str = $db->prepare("SELECT u.nome, u.login, u.email, u.administrador FROM usuario u INNER JOIN setor s ON s.id = u.idSetor 
         WHERE u.login = :login AND u.senha = :senha AND u.bloqueado != 1");
     $str->bindParam("login", $login["login"]);
     $str->bindParam("senha", $login["senha"]);
@@ -115,7 +116,7 @@ function get_usuarios($db)
 
 function get_usuarios_byLogin($db, $login)
 {
-    $str = $db->prepare("SELECT login, u.nome, idSetor
+    $str = $db->prepare("SELECT login, u.nome, idSetor, administrador
     FROM usuario u WHERE u.bloqueado = 0 AND 
     login = :login");
     $str->bindParam("login", $login);
@@ -126,11 +127,13 @@ function get_usuarios_byLogin($db, $login)
 
 function usuario_atualizar($db, $usuario)
 {
-    $str = $db->prepare("UPDATE usuario SET nome = :nome, idSetor = :idSetor 
+    $str = $db->prepare("UPDATE usuario SET nome = :nome, idSetor = :idSetor, 
+    administrador = :administrador 
         WHERE login = :login");
     $str->bindParam("nome", $usuario["nome"]);
     $str->bindParam("login", $usuario["login"]);
     $str->bindParam("idSetor", $usuario["idSetor"]);
+    $str->bindParam("administrador", $usuario["administrador"]);
     $str->execute();
 
     if (isset($usuario["senha"]) && $usuario["senha"] != "") {
@@ -150,4 +153,12 @@ function usuario_atualizar($db, $usuario)
     } else {
         return array();
     }
+}
+
+
+function verificarADM($db)
+{
+    $str = $db->prepare("SELECT * FROM usuario WHERE administrador = 1");
+    $str->execute();
+    return $str->fetchAll();
 }
