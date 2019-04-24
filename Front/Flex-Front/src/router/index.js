@@ -25,6 +25,10 @@ import ListarTipos from '@/components/ListarTipos.vue'
 /////////////////////////////////////////////////////////////
 import ConfigurarNotificacoes from '@/components/ConfigurarNotificacoes.vue'
 import VerNotificacoes from '@/components/VerNotificacoes.vue'
+///////////////////////////////////////
+
+import CadastrarDocumentoNormal from '@/components/CadastrarDocumentoNormal.vue'
+import ListaDocumentoNormal from '@/components/ListaDocumentosNormal.vue'
 
 Vue.use(Router)
 
@@ -108,6 +112,32 @@ export default new Router({
             verificarLogin(to, next)
           }
         },
+        //CadastroDocumentoNormal
+        {
+          path: '/ListaDocumentosNormal',
+          name: 'ListaDocumentosNormal',
+          component: ListaDocumentoNormal,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        }, {
+          path: '/CadastrarDocumentoNormal',
+          name: 'CadastroDocumentoNormal',
+          component: CadastrarDocumentoNormal,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        {
+          path: '/CadastrarDocumentoNormal/:id',
+          props: true,
+          name: 'CadastrarDocumentoNormal2',
+          component: CadastrarDocumentoNormal,
+          beforeEnter(to, from, next) {
+            verificarLogin(to, next)
+          }
+        },
+        ////
         {
           path: '/CadastrarDocumento/:id',
           props: true,

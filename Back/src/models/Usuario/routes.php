@@ -19,6 +19,11 @@ $app->get("/usuario/{login}", function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
+$app->get("/documentosBySetor/{setor}", function ($request, $response, $args) {
+    $retorno = get_documentos_bySetor($this->db, $args["setor"]);
+    return $this->response->withJson($retorno);
+});
+
 $app->post('/usuario', function ($request, $response, $args) {
     $usuario = $request->getParsedBody();
     $retorno = usuario_cadastro($this->db, $usuario);

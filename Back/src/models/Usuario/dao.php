@@ -9,11 +9,16 @@ function get_responsaveis($db)
 }
 function salvar_filtros($db, $filtros)
 {
-    $str = $db->prepare("UPDATE usuario SET isNotificationModal = :isNotificationModal, isNotificationEmail = :isNotificationEmail
-    timeNotificationModal = :timeNotificationModal, timeNotificationEmail = :timeNotificationModal WHERE login=:login");
+    $str = $db->prepare("UPDATE usuario SET 
+    isNotificationModal = :isNotificationModal, 
+    isNotificationEmail = :isNotificationEmail,
+    timeNotificationModal = :timeNotificationModal, 
+    timeNotificationEmail = :timeNotificationEmail 
+    WHERE login=:login");
     $str->bindParam("isNotificationModal", $filtros["isNotificationModal"]);
     $str->bindParam("isNotificationEmail", $filtros["isNotificationEmail"]);
-    $str->bindParam("timeNotificationModal", $filtros["timeNotificationModal"]);
+    $str->bindParam("timeNotificationModal", $filtros["time"]);
+    $str->bindParam("timeNotificationEmail", $filtros["time"]);
     $str->bindParam("login", $filtros["login"]);
     $str->execute();
     $str = $db->prepare("SELECT timeNotificationModal FROM usuario u WHERE u.login=:login");
@@ -116,10 +121,32 @@ function get_usuarios($db)
 
 function get_usuarios_byLogin($db, $login)
 {
-    $str = $db->prepare("SELECT login, u.nome, idSetor, administrador
-    FROM usuario u WHERE u.bloqueado = 0 AND 
+    $str = $db->prepare("SELECT login, u.nome, idSetor, s.nome as setor,administrador, isNotificationEmail, 
+    isNotificationModal, 
+    timeNotificationEmail, timeNotificationModal
+    FROM usuario u (NOLOCK)
+    INNER JOIN setor s (NOLOCK) ON s.id = idSetor
+    WHERE u.bloqueado = 0 AND 
     login = :login");
     $str->bindParam("login", $login);
+    $str->execute();
+    return $str->fetchAll();
+}
+
+function get_documentos_bySetor($db, $setor)
+{
+    $str = $db->prepare("
+    SELECT d.id, d.nome_arquivo, d.arquivo, d.nome nome, s.nome setor, t.nome tipo,  
+    CONVERT(NVARCHAR, dataCadastrado, 120) dataCadastrado,
+    CONVERT(NVARCHAR, dataVencimento, 120) dataVencimento, 
+    u.login responsavel FROM documento d 
+    INNER JOIN setor s on s.id = d.idSetor
+    INNER JOIN tipo t on t.id = d.idTipo  
+    INNER JOIN responsavel r on d.id = r.idDocumento
+    INNER JOIN usuario u on u.login = r.loginUsuario
+    WHERE d.idSetor = :idSetor
+    ");
+    $str->bindParam("idSetor", $setor);
     $str->execute();
     return $str->fetchAll();
 }

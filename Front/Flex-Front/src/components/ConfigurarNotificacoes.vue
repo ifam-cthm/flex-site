@@ -1,23 +1,22 @@
 <template>
-<v-app>
-  
-        <v-dialog v-model="dialog" width="500">
+  <v-app>
+    <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
 
-        <v-card-text>Erro ao acessar o servi�os. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o serviços. Contate o administrador, por favor!</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialog = false">Ok</v-btn>
         </v-card-actions>
       </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogErro3" width="500">
+    </v-dialog>
+    <v-dialog v-model="dialogErro3" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
 
-        <v-card-text>Erro ao cadastrar o usu�rio.</v-card-text>
+        <v-card-text>Erro ao cadastrar o usuário.</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -26,44 +25,41 @@
       </v-card>
     </v-dialog>
     <div>
-    <v-form>
-      <h3>Configuracoes de Notificacoes</h3>
-      <br>
-      <h4>Verifique que seu email esta cadastrado corretamente</h4>
-      <label>Ativar Notificacoes via email?</label>
-      <br>
-      <input type="radio" id="sim" value=true v-model="filtro.isNotificationEmail">
-      <label for="sim">Sim   </label>
-      <input type="radio" id="nao" value=false v-model="filtro.isNotificationEmail">
-      <label for="nao">Nao</label>
-    <br>  
-    <label>Ativar Notificacoes via poup-up?</label>
-      <br>
-      <input type="radio" id="sim" value=true v-model="filtro.isNotificationModel">
-      <label for="sim">Sim   </label>
-      <input type="radio" id="nao" value=false v-model="filtro.isNotificationModel">
-      <label for="nao">Nao</label>
-    <br>
-    <br>  
-    <div>
-    </div>
-    <h4>Qual tempo de antecedencia vc quer ser lembrado?</h4>
-      <v-flex xs12 md2>
-        <v-select
-          item-text="text"
-          item-value="value"
-          v-model="filtro.timeNotificationModal"
-          :items="itemsDiferenca"
-          label="Periodo de diferenca"
-        ></v-select>
-      </v-flex>
-          <v-flex xs12 md2>
-            <v-btn color="success" @click="salvar">Salvar</v-btn>
+      <v-form style="margin: 10pt; text-align: center;">
+        <h2>Configurações de Notificações</h2>
+        <br>
+        <h4>Verifique se seu email está cadastrado corretamente</h4>
+        <label>Ativar notificações via email?</label>
+        <br>
+        <input type="radio" id="simEmail" value="true" v-model="filtro.isNotificationEmail">
+        <label for="simEmail">Sim</label>
+        <input type="radio" id="naoEmail" value="false" v-model="filtro.isNotificationEmail">
+        <label for="naoEmail">Nao</label>
+        <br>
+        <label>Ativar Notificacoes via poup-up?</label>
+        <br>
+        <input type="radio" id="simModal" value="true" v-model="filtro.isNotificationModal">
+        <label for="simModal">Sim</label>
+        <input type="radio" id="naoModal" value="false" v-model="filtro.isNotificationModal">
+        <label for="naoModal">Nao</label>
+        <br>
+        <br>
+        <div></div>
+        <h4>As notificações devem começa a aparecer a partir de?</h4>
+        <v-layout align-center justify-center row fill-height>
+          <v-flex xs1>
+            <v-select
+              item-text="text"
+              item-value="value"
+              v-model="filtro.time"
+              :items="itemsDiferenca"
+            ></v-select>
           </v-flex>
-    </v-form>
-
-  </div>
-</v-app>
+        </v-layout>
+        <v-btn color="success" @click="salvar">Salvar</v-btn>
+      </v-form>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -75,7 +71,7 @@ export default {
       checked: false,
       dialogErro3: false,
       dialog: false,
-      usuario:{},
+      usuario: {},
       itemsDiferenca: [
         { value: 1, text: "1 dia" },
         { value: 7, text: "1 Semana" },
@@ -84,36 +80,49 @@ export default {
         { value: 365, text: "1 ano" }
       ],
       filtro: {
-        timeNotificationEmail: "",
-        timeNotificationModal: "",
+        time: 30,
         isNotificationModal: "",
         isNotificationEmail: "",
-        login: "",
+        login: ""
       }
-    }
+    };
   },
   methods: {
-    salvar: function(){
-        this.filtro.login = this.usuario.login;
-        axios.
-        post("/saveConfig", this.filtro)
-        .then(response=>{
+    salvar: function() {
+      this.filtro.login = this.usuario.login;
+      axios
+        .post("/saveConfig", this.filtro)
+        .then(response => {
           if (response.data) {
-              this.$router.push({ name: "Menu" });
-            } else {
-              this.dialogErro3 = true;
-            }
+            this.$router.push({ name: "Menu" });
+          } else {
+            this.dialogErro3 = true;
+          }
         })
-        .catch(e=>{
+        .catch(e => {
           console.log(e);
-            this.dialog = true;
+          this.dialog = true;
         });
-    },
-    created: function(){
+    }
+  },
+  created: function() {
     let usuario = JSON.parse(localStorage.getItem("flex-site_cthm"));
-    this.usuario = usuario
+    axios
+      .get("usuario/" + usuario.login)
+      .then(response => {
+        this.usuario = response.data[0];
+        this.filtro.isNotificationModal =
+          this.usuario.isNotificationModal == "1" ? true : false;
+
+        this.filtro.isNotificationEmail =
+          this.usuario.isNotificationEmail == "1" ? true : false;
+
+        this.filtro.time = parseInt(this.usuario.timeNotificationEmail);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    //this.usuario = usuario;
   }
-  
-  }
-}
+};
 </script>

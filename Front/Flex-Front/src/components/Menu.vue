@@ -30,6 +30,14 @@
             </v-list-tile-title>
           </v-list-tile>
         </v-list-group>
+        <v-list-tile v-if="usuario.administrador == '0'">
+          <v-list-tile-action>
+            <v-icon>insert_drive_file</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>
+            <router-link :to="{name: 'ListaDocumentosNormal'}">Cadastro de documentos</router-link>
+          </v-list-tile-title>
+        </v-list-tile>
         <v-list-tile>
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>
