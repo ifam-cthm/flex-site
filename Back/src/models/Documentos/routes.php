@@ -59,13 +59,14 @@ $app->delete("/documentos/{id}", function ($request, $response, $args) {
 
 
 $app->get("/documentos_vencimento", function ($request, $response, $args) {
+    set_time_limit(5000);
     $retorno = procurar_documentos_proximo_vencimento($this->db);
     foreach ($retorno as $aux) {
         email(
-            $aux["usuario.email"],
-            $aux["usuario.nome"],
+            $aux["email"],
+            $aux["nomeUsuario"],
             "Documento perto de vencer",
-            "O documento" . $aux["documento.nome"] . "está há" . "" . "de vencer"
+            "O documento " . $aux["documento"] . " est? perto h? " . $aux["validade"] . " dias de vencer"
         );
     }
     return $this->response->withJson($retorno);

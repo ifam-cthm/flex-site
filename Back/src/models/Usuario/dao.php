@@ -154,12 +154,13 @@ function get_documentos_bySetor($db, $setor)
 
 function usuario_atualizar($db, $usuario)
 {
-    $str = $db->prepare("UPDATE usuario SET nome = :nome, idSetor = :idSetor, 
+    $str = $db->prepare("UPDATE usuario SET nome = :nome, idSetor = :idSetor, email = :email,
     administrador = :administrador 
         WHERE login = :login");
     $str->bindParam("nome", $usuario["nome"]);
     $str->bindParam("login", $usuario["login"]);
     $str->bindParam("idSetor", $usuario["idSetor"]);
+    $str->bindParam("email", $usuario["email"]);
     $str->bindParam("administrador", $usuario["administrador"]);
     $str->execute();
 
