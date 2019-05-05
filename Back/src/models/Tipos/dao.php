@@ -38,6 +38,25 @@ function update_tipos($db, $tipo, $tipos)
     return true;
 }
 
+function get_tipos_name($db, $nome)
+{
+    $str = $db->prepare("SELECT id, nome, bloqueado FROM tipo where nome = :nome");
+    $str->bindParam("nome", $nome);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
+function get_tipos_id_name($db, $id, $nome)
+{
+    $str = $db->prepare("SELECT id, nome, bloqueado FROM tipo where nome = :nome AND id <> :id");
+    $str->bindParam("nome", $nome);
+    $str->bindParam("id", $id);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
 function recuperarTipos($db, $tipo)
 {
     $str = $db->prepare("UPDATE tipo SET bloqueado = 0 where id = :id");

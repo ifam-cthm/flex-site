@@ -6,16 +6,16 @@
         <v-card-text>Tem certeza que queres excluir este Setor?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="dialog = false">NÃ£o</v-btn>
+          <v-btn color="red darken-1" flat @click="dialog = false">NÃƒÂ£o</v-btn>
           <v-btn color="green darken-1" flat @click="deleteItem">Sim</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-        <v-dialog v-model="dialogErro1" width="500">
+    <v-dialog v-model="dialogErro1" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
 
-        <v-card-text>Você não tem acesso a essa página entre em contato com os Administradores para saber mais</v-card-text>
+        <v-card-text>VocÃª nÃ£o tem acesso a essa pÃ¡gina entre em contato com os Administradores para saber mais</v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -29,7 +29,7 @@
         <v-card-text>Tem certeza que queres recuperar este Setor?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" flat @click="dialogRecuperar = false">Não</v-btn>
+          <v-btn color="red darken-1" flat @click="dialogRecuperar = false">NÃ£o</v-btn>
           <v-btn color="green darken-1" flat @click="recuperarItem">Sim</v-btn>
         </v-card-actions>
       </v-card>
@@ -67,13 +67,13 @@ export default {
     return {
       items: [],
       item: {},
-      usuario:{},
+      usuario: {},
       dialog: false,
       dialogRecuperar: false,
       headers: [
         { text: "Nome", value: "nome" },
         { text: "Bloqueado", value: "bloqueado" },
-        { text: "Ações" }
+        { text: "AÃ§Ãµes" }
       ]
     };
   },
@@ -134,10 +134,10 @@ export default {
   },
   created: function() {
     let usuario = JSON.parse(localStorage.getItem("flex-site_cthm"));
-    this.usuario = usuario
-//    if(this.usuario.administrador==true)
-      this.carregar();
-  //  else
+    this.usuario = usuario;
+    //    if(this.usuario.administrador==true)
+    this.carregar();
+    //  else
   }
 };
 </script>

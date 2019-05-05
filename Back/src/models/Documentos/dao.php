@@ -191,6 +191,25 @@ function get_documento_byId($db, $id)
 }
 
 
+function get_documentos_name($db, $nome)
+{
+    $str = $db->prepare("SELECT * FROM documento where nome = :nome");
+    $str->bindParam("nome", $nome);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
+function get_documentos_id_name($db, $id, $nome)
+{
+    $str = $db->prepare("SELECT * FROM documento where nome = :nome AND id <> :id");
+    $str->bindParam("nome", $nome);
+    $str->bindParam("id", $id);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
 function documento_delete($db, $id)
 {
     $str = $db->prepare("UPDATE documento SET bloqueado = 1 WHERE id = :id");
@@ -199,15 +218,16 @@ function documento_delete($db, $id)
     return "ok!";
 }
 
-function procurar_documentos_proximo_vencimento($db){
+function procurar_documentos_proximo_vencimento($db)
+{
     $str = $db->prepare("SELECT u.email, u.nome as nomeUsuario, d.nome as documento, u.timeNotificationEmail as validade from documento d
    INNER JOIN responsavel r on r.idDocumento = d.id
    INNER JOIN usuario u on u.login = r.loginUsuario 
    where DATEDIFF(day, d.dataVencimento, GETDATE()) < u.timeNotificationEmail AND u.isNotificationEmail=1 AND d.bloqueado!=1");
-   /*
+    /*
    $data = date('d/m/Y');  
    $str->bindParam("dataVencimento", $data);*/
-   $str->execute();
-   $retorno = $str->fetchAll();
-   return $retorno;
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
 }

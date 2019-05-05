@@ -108,7 +108,7 @@ function usuario_cadastro($db, $usuario)
 
 function get_usuarios($db)
 {
-    $str = $db->prepare("SELECT login, u.nome, s.nome setor, 
+    $str = $db->prepare("SELECT login, u.nome, s.nome setor, u.email,
     CASE u.administrador  
         WHEN '0' THEN 'NÃO'
         ELSE 'SIM'
@@ -121,7 +121,7 @@ function get_usuarios($db)
 
 function get_usuarios_byLogin($db, $login)
 {
-    $str = $db->prepare("SELECT login, u.nome, idSetor, s.nome as setor,administrador, isNotificationEmail, 
+    $str = $db->prepare("SELECT login, u.nome, email, idSetor, s.nome as setor,administrador, isNotificationEmail, 
     isNotificationModal, 
     timeNotificationEmail, timeNotificationModal
     FROM usuario u (NOLOCK)

@@ -28,6 +28,16 @@ $app->put('/tipos/{tipo}', function ($request, $response, $args) {
 });
 
 
+$app->get('/tiposByName/{nome}', function ($request, $response, $args) {
+    $retorno = get_tipos_name($this->db, $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+$app->get('/tipoByName/{id}/{nome}', function ($request, $response, $args) {
+    $retorno = get_tipos_id_name($this->db, $args["id"], $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+
+
 $app->get('/tiposRecuperar/{tipos}', function ($request, $response, $args) {
     $retorno = recuperarTipos($this->db, $args["tipos"]);
     return $this->response->withJson($retorno);

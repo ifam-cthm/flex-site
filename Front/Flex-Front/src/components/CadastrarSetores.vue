@@ -22,6 +22,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogErro5" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
+
+        <v-card-text>Esse setor já existe!</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" flat @click="dialogErro5 = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogErro3" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
@@ -55,6 +67,7 @@ export default {
       dialogErro1: false,
       dialogErro2: false,
       dialogErro3: false,
+      dialogErro5: false,
       title: "",
       cadastro: true,
       setor: {
@@ -70,12 +83,24 @@ export default {
         this.dialogErro1 = true;
       } else {
         axios
-          .post("setor", this.setor)
+          .get("setorByName/" + this.setor.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListarSetores" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
-              this.dialogErro3 = true;
+              axios
+                .post("setor", this.setor)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListarSetores" });
+                  } else {
+                    this.dialogErro3 = true;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialog = true;
+                });
             }
           })
           .catch(e => {
@@ -89,12 +114,24 @@ export default {
         this.dialogErro1 = true;
       } else {
         axios
-          .put("setor/" + this.setor.id, this.setor)
+          .get("setorByName/" + this.setor.id + "/" + this.setor.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListarSetores" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
-              this.dialogErro3 = true;
+              axios
+                .put("setor/" + this.setor.id, this.setor)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListarSetores" });
+                  } else {
+                    this.dialogErro3 = true;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialog = true;
+                });
             }
           })
           .catch(e => {

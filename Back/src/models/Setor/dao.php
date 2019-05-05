@@ -18,6 +18,27 @@ function get_setores_id($db, $id)
     return $retorno;
 }
 
+
+function get_setores_name($db, $nome)
+{
+    $str = $db->prepare("SELECT id, nome, bloqueado FROM setor where nome = :nome");
+    $str->bindParam("nome", $nome);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
+function get_setores_id_name($db, $id, $nome)
+{
+    $str = $db->prepare("SELECT id, nome, bloqueado FROM setor where nome = :nome AND id <> :id");
+    $str->bindParam("nome", $nome);
+    $str->bindParam("id", $id);
+    $str->execute();
+    $retorno = $str->fetchAll();
+    return $retorno;
+}
+
+
 function inserir_setor($db, $setor)
 {
     $str = $db->prepare("INSERT INTO setor (nome, bloqueado)
@@ -36,7 +57,8 @@ function update_setor($db, $id, $setor)
     return true;
 }
 
-function recuperarSetor($db, $id){
+function recuperarSetor($db, $id)
+{
     $str = $db->prepare("UPDATE setor SET bloqueado = 0 WHERE id = :id");
     $str->bindParam("id", $id);
     $str->execute();
@@ -44,7 +66,8 @@ function recuperarSetor($db, $id){
 }
 
 
-function deleteSetor($db, $id){
+function deleteSetor($db, $id)
+{
     $str = $db->prepare("UPDATE setor SET bloqueado = 1 WHERE id = :id");
     $str->bindParam("id", $id);
     $str->execute();

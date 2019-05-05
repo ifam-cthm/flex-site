@@ -2,7 +2,7 @@
   <v-app>
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Atenзгo</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Atenção</v-card-title>
         <v-card-text>Erro ao cadastrar um novo documento. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -10,7 +10,18 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogErro5" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
 
+        <v-card-text>Esse documento já existe!</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" flat @click="dialogErro5 = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialogErro" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
@@ -104,6 +115,7 @@ export default {
       dialog: false,
       dialogErro: false,
       dialogErro1: false,
+      dialogErro5: false,
       cadastro: true,
       file: "",
       title: "",
@@ -180,11 +192,23 @@ export default {
         this.documento.arquivo = file;
         this.documento.setor = this.usuario.idSetor;
         axios
-          .post("documento", this.documento)
+          .get("documentosByName/" + this.documento.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListaDocumentosNormal" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
+              axios
+                .post("documento", this.documento)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListaDocumentosNormal" });
+                  } else {
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialogErro = true;
+                });
             }
           })
           .catch(e => {
@@ -203,13 +227,27 @@ export default {
       ) {
         dialogErro = true;
       } else {
-        this.documento.setor = this.usuario.idSetor;
         axios
-          .put("documentos/" + this.documento.id, this.documento)
+          .get(
+            "documentosByName/" + this.documento.id + "/" + this.documento.nome
+          )
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListaDocumentosNormal" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
+              this.documento.setor = this.usuario.idSetor;
+              axios
+                .put("documentos/" + this.documento.id, this.documento)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListaDocumentosNormal" });
+                  } else {
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialogErro = true;
+                });
             }
           })
           .catch(e => {

@@ -1,8 +1,20 @@
 <template>
   <v-app>
+    <v-dialog v-model="dialogErro5" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
+
+        <v-card-text>Esse documento jÃ¡ existe!</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" flat @click="dialogErro5 = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Atenção</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Atenï¿½ï¿½o</v-card-title>
         <v-card-text>Erro ao cadastrar um novo documento. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -14,7 +26,7 @@
     <v-dialog v-model="dialogErro" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
-        <v-card-text>Erro ao acessar o serviços. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o serviÃ§os. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialogErro = !dialogErro">Ok</v-btn>
@@ -49,7 +61,7 @@
                     :items="itemsResponsaveis"
                     item-text="nome"
                     item-value="login"
-                    label="Responsável"
+                    label="ResponsÃ¡vel"
                   ></v-autocomplete>
                 </v-flex>
               </v-layout>
@@ -115,6 +127,7 @@ export default {
       dialogErro: false,
       dialogErro1: false,
       cadastro: true,
+      dialogErro5: false,
       file: "",
       title: "",
       documento: {
@@ -188,13 +201,25 @@ export default {
       ) {
         dialogErro = true;
       } else {
-        this.documento.arquivo = file;
         axios
-          .post("documento", this.documento)
+          .get("documentosByName/" + this.documento.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListaDocumentos" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
+              this.documento.arquivo = file;
+              axios
+                .post("documento", this.documento)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListaDocumentos" });
+                  } else {
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialogErro = true;
+                });
             }
           })
           .catch(e => {
@@ -215,11 +240,25 @@ export default {
         dialogErro = true;
       } else {
         axios
-          .put("documentos/" + this.documento.id, this.documento)
+          .get(
+            "documentosByName/" + this.documento.id + "/" + this.documento.nome
+          )
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListaDocumentos" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
+              axios
+                .put("documentos/" + this.documento.id, this.documento)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListaDocumentos" });
+                  } else {
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialogErro = true;
+                });
             }
           })
           .catch(e => {

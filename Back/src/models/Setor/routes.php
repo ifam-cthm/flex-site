@@ -11,6 +11,15 @@ $app->get('/setor', function ($request, $response) {
     return $this->response->withJson($retorno);
 });
 
+$app->get('/setorByName/{nome}', function ($request, $response, $args) {
+    $retorno = get_setores_name($this->db, $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+$app->get('/setorByName/{id}/{nome}', function ($request, $response, $args) {
+    $retorno = get_setores_id_name($this->db, $args["id"], $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+
 $app->get('/setor/{id}', function ($request, $response, $args) {
     $retorno = get_setores_id($this->db, $args["id"]);
     return $this->response->withJson($retorno);

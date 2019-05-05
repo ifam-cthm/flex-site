@@ -1,9 +1,21 @@
     <template>
   <v-app>
+    <v-dialog v-model="dialogErro5" width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
+
+        <v-card-text>Esse tipo de documento j√° existe!</v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" flat @click="dialogErro5 = false">Ok</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="dialog" width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Erro</v-card-title>
-        <v-card-text>Erro ao acessar o serviÁos. Contate o administrador, por favor!</v-card-text>
+        <v-card-text>Erro ao acessar o servi√ßos. Contate o administrador, por favor!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" flat @click="dialog = false">Ok</v-btn>
@@ -38,7 +50,7 @@
       <span>{{title}}</span>
       <v-form ref="form">
         <v-text-field v-model="tipo.nome" label="Nome" required></v-text-field>
-        <v-text-field v-model="tipo.descricao" label="DescriÁ„o"></v-text-field>
+        <v-text-field v-model="tipo.descricao" label="Descri√ß√£o"></v-text-field>
         <v-btn v-if="cadastro" color="success" @click="cadastrar">Cadastrar</v-btn>
         <v-btn v-else color="success" @click="alterar">Alterar</v-btn>
       </v-form>
@@ -56,6 +68,7 @@ export default {
       dialogErro1: false,
       dialogErro2: false,
       dialogErro3: false,
+      dialogErro5: false,
       title: "",
       cadastro: true,
       tipo: {
@@ -71,12 +84,24 @@ export default {
         this.dialogErro1 = true;
       } else {
         axios
-          .post("tipos", this.tipo)
+          .get("tiposByName/" + this.tipo.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListarTipos" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
-              this.dialogErro3 = true;
+              axios
+                .post("tipos", this.tipo)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListarTipos" });
+                  } else {
+                    this.dialogErro3 = true;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialog = true;
+                });
             }
           })
           .catch(e => {
@@ -90,12 +115,24 @@ export default {
         this.dialogErro1 = true;
       } else {
         axios
-          .put("tipos/" + this.tipo.id, this.tipo)
+          .get("setorByName/" + this.tipo.id + "/" + this.tipo.nome)
           .then(response => {
-            if (response.data) {
-              this.$router.push({ name: "ListarTipos" });
+            if (response.data.length >= 1) {
+              this.dialogErro5 = true;
             } else {
-              this.dialogErro3 = true;
+              axios
+                .put("tipos/" + this.tipo.id, this.tipo)
+                .then(response => {
+                  if (response.data) {
+                    this.$router.push({ name: "ListarTipos" });
+                  } else {
+                    this.dialogErro3 = true;
+                  }
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.dialog = true;
+                });
             }
           })
           .catch(e => {

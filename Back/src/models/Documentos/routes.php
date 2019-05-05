@@ -57,6 +57,16 @@ $app->delete("/documentos/{id}", function ($request, $response, $args) {
 });
 
 
+$app->get('/documentosByName/{nome}', function ($request, $response, $args) {
+    $retorno = get_documentos_name($this->db, $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+$app->get('/documentosByName/{id}/{nome}', function ($request, $response, $args) {
+    $retorno = get_documentos_id_name($this->db, $args["id"], $args["nome"]);
+    return $this->response->withJson($retorno);
+});
+
+
 
 $app->get("/documentos_vencimento", function ($request, $response, $args) {
     set_time_limit(5000);
