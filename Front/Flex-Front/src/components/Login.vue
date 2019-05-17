@@ -40,13 +40,13 @@
       <img src="../assets/logo.jpg">
       <v-form ref="form" @keyup.enter="entrar">
         <div v-if="!logando">
-          <v-text-field v-model="login.login" label="Login" required></v-text-field>
-          <v-text-field v-model="login.senha" label="Senha" type="password" required></v-text-field>
+          <v-text-field v-model="login.login" label="Login" @keyup.enter="entrar" required></v-text-field>
+          <v-text-field v-model="login.senha" label="Senha" @keyup.enter="entrar" type="password" required></v-text-field>
           <v-btn color="success"  @click="entrar">Entrar</v-btn>
         </div>
         <div v-else>
-          <v-text-field disabled v-model="login.login" label="Login" required></v-text-field>
-          <v-text-field disabled v-model="login.senha" label="Senha" type="password" required></v-text-field>
+          <v-text-field disabled v-model="login.login" label="Login" @keyup.enter="entrar" required></v-text-field>
+          <v-text-field disabled v-model="login.senha" label="Senha" @keyup.enter="entrar" type="password" required></v-text-field>
           <v-btn color="warning" disabled>Logando...</v-btn>
         </div>
       </v-form>

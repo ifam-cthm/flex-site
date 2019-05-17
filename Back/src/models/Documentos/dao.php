@@ -190,6 +190,31 @@ function get_documento_byId($db, $id)
     return $str->fetchAll();
 }
 
+function get_documento_byTag($db, $tag)
+{
+    $str = $db->prepare("SELECT d.id, d.nome_arquivo, d.arquivo, d.nome nome, s.id setor, t.id tipo,  
+    CONVERT(NVARCHAR, dataCadastrado, 120) dataCadastrado,
+    CONVERT(NVARCHAR, dataVencimento, 120) dataVencimento, 
+    u.login responsavel FROM documento d 
+    INNER JOIN setor s on s.id = d.idSetor
+    INNER JOIN tipo t on t.id = d.idTipo  
+    INNER JOIN responsavel r on d.id = r.idDocumento
+    INNER JOIN usuario u on u.login = r.loginUsuario
+    WHERE d.tag = :tag AND d.bloqueado = 0 AND r.dateSaida IS NULL");
+    $str->bindParam("tag", $tag);
+    $str->execute();
+    return $str->fetchAll();
+}
+
+function set_documento_tag($db, $documento)
+{
+    $str = $db->prepare("UPDATE documento SET tag=:tag
+    WHERE id = :id");
+    $str->bindParam("id", $documento["id"]);
+    $str->bindParam("tag", $documento["tag"]);
+    $str->execute();
+    return $str->fetchAll();
+}
 
 function get_documentos_name($db, $nome)
 {

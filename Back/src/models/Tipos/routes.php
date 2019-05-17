@@ -16,6 +16,12 @@ $app->get('/tipos/{tipo}', function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
+$app->post("/saveConfig", function ($request, $response, $args) {
+    $filtros = $request->getParsedBody();
+    $retorno = salvar_filtros($this->db, $filtros);
+    return $this->response->withJson($retorno);
+});
+
 $app->post('/tipos', function ($request, $response) {
     $tipo = $request->getParsedBody();
     $retorno = inserir_tipos($this->db, $tipo);

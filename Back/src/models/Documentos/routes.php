@@ -45,6 +45,17 @@ $app->get("/documentos/{id}", function ($request, $response, $args) {
     return $this->response->withJson($retorno);
 });
 
+$app->get("/documentos_tag/{tag}", function ($request, $response, $args) {
+    $retorno = get_documento_byTag($this->db, $args["tag"]);
+    return $this->response->withJson($retorno);
+});
+
+$app->post("/documentos_tag", function ($request, $response, $args) {
+    $documento = $request->getParsedBody();
+    $retorno = set_documento_tag($this->db, $documento);
+    return $this->response->withJson($retorno);
+});
+
 $app->put("/documentos/{id}", function ($request, $response, $args) {
     $documento = $request->getParsedBody();
     $retorno = documento_atualizacao($this->db, $documento);
@@ -55,7 +66,6 @@ $app->delete("/documentos/{id}", function ($request, $response, $args) {
     $retorno = documento_delete($this->db, $args["id"]);
     return $this->response->withJson($retorno);
 });
-
 
 $app->get('/documentosByName/{nome}', function ($request, $response, $args) {
     $retorno = get_documentos_name($this->db, $args["nome"]);

@@ -1,3 +1,3 @@
 <?php
-    header("Refresh:0; url=localhost/Back/public/documentos_vencimento");
+    header("Refresh:0; url=flex");
 ?>

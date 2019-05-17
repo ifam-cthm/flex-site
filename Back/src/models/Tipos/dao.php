@@ -10,7 +10,7 @@ function get_tipos($db)
 
 function get_tipos_id($db, $id)
 {
-    $str = $db->prepare("SELECT id, nome, bloqueado, descricao FROM tipo where id = :id");
+    $str = $db->prepare("SELECT id, nome, bloqueado, descricao, timeNotificationEmail FROM tipo where id = :id");
     $str->bindParam("id", $id);
     $str->execute();
     $retorno = $str->fetchAll();
@@ -71,4 +71,28 @@ function deleteTipos($db, $tipo)
     $str->bindParam("id", $tipo);
     $str->execute();
     return true;
+}
+
+function salvar_filtros($db, $filtros)
+{
+    $str = $db->prepare("UPDATE tipo SET 
+    isNotificationModal = :isNotificationModal, 
+    isNotificationEmail = :isNotificationEmail,
+    timeNotificationModal = :timeNotificationModal, 
+    timeNotificationEmail = :timeNotificationEmail 
+    WHERE id=:id");
+    $str->bindParam("isNotificationModal", $filtros["isNotificationModal"]);
+    $str->bindParam("isNotificationEmail", $filtros["isNotificationEmail"]);
+    $str->bindParam("timeNotificationModal", $filtros["time"]);
+    $str->bindParam("timeNotificationEmail", $filtros["time"]);
+    $str->bindParam("id", $filtros["id"]);
+    $str->execute();
+    $str = $db->prepare("SELECT timeNotificationModal FROM tipo t WHERE t.id=:id");
+    $str->bindParam("id", $filtros["id"]);
+    $retorno = $str->fetchAll();
+    if (count($retorno) != 0) {
+        return $retorno[0];
+    } else {
+        return array();
+    }
 }

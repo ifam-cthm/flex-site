@@ -9,11 +9,6 @@ $app->get("/usuario", function ($request, $response, $args) {
     $retorno = get_usuarios($this->db);
     return $this->response->withJson($retorno);
 });
-$app->post("/saveConfig", function ($request, $response, $args) {
-    $filtros = $request->getParsedBody();
-    $retorno = salvar_filtros($this->db, $filtros);
-    return $this->response->withJson($retorno);
-});
 $app->get("/usuario/{login}", function ($request, $response, $args) {
     $retorno = get_usuarios_byLogin($this->db, $args["login"]);
     return $this->response->withJson($retorno);
