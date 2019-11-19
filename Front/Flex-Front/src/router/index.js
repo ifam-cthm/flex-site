@@ -53,7 +53,7 @@ function verificarLogin(to, next) {
 export default new Router({
   mode: 'history',
   relative: true,
-  base: '/flex',
+  base: 'azulejo_yii/backend/web/index.php/ecm/index',
   routes: [{
       path: "*",
       redirect: "/Dashboard"

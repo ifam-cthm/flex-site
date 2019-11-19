@@ -78,7 +78,7 @@ export default {
         .post("login", this.login)
         .then(response => {
           if (response.data.nome) {
-            this.$router.push({ name: "Menu" });
+            this.$router.push({ name: "Dashboard" });
             localStorage.setItem(
                 "flex-site_cthm",
                 JSON.stringify(response.data)
@@ -94,7 +94,7 @@ export default {
     }
   },
 
-  created: function() {
+ created: function() {
     axios
       .get("iniciar")
       .then(response => {
