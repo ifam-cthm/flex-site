@@ -34,8 +34,7 @@ require __DIR__ . '/../src/models/Usuario/routes.php';
 require __DIR__ . '/../src/models/Setor/routes.php';
 require __DIR__ . '/../src/models/Documentos/routes.php';
 require __DIR__ . '/../src/models/Tipos/routes.php';
-
-
+require __DIR__ . '/../src/models/Ativos/routes.php';
 
 // Run app
 $app->run();

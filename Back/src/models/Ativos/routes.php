@@ -5,8 +5,6 @@ use Slim\Http\Response;
 
 require 'dao.php';
 // Routes
-
-
 //Cadastro
 $app->post('/ativo', function ($request, $response, $args) {
     $ativo = $request->getParsedBody();
@@ -28,6 +26,9 @@ $app->put('/ativo/{id}', function ($request, $response, $args) {
 
 //Selecionar todos
 $app->get('/ativo', function ($request, $response, $args) {
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('GET', 'http://192.168.0.36:9097/rest/03/WSATF001/entities?pagesize=100000000&type=0');
+    ativo_cadastro($this->db, $aux["entities"]);
     $retorno = get_ativos($this->db);
     return $this->response->withJson($retorno);
 });

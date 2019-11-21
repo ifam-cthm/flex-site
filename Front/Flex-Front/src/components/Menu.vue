@@ -139,6 +139,10 @@ export default {
         {
           title: "Usuarios",
           path: "ListaUsuarios"
+        },
+        {
+          title: "Ativos",
+          path: ""
         }
       ],
       listaMenuNotificacoes: [

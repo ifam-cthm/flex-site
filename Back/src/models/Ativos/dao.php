@@ -7,10 +7,11 @@
         return $str->fetchAll();
     }
     function get_ativos($db){
-        $str = $db->prepare("SELECT * FROM ativo, adicionalAtivo");
+        $str = $db->prepare("SELECT * FROM ativo");
         $str->execute();
         return $str->fetchAll();
     }
+
     function ativo_alterar($db, $ativo){
         $str = $db->prepare("UPDATE adicionalAtivo SET
         idLinha=:idLinha, idSetor=:idSetor, idAtivo=:idAtivo, registro=:registro,
@@ -45,13 +46,11 @@
                 $str = $db->prepare("INSERT INTO adicionalAtivo
                 (idLinha,idSetor,idAtivo,registro
                 ,descricao,marca,modelo,serie,ativoFixo,faixaMedicao,
-                calibracao,proximaCalibracao)VALUES(idLinha=:idLinha,
-                idSetor=:idSetor,idAtivo=:idAtivo,registro=:registro,
-                descricao=:descricao,
-                marca=:marca,modelo=:modelo,
-                serie=:serie,ativoFixo=:ativoFixo,faixaMedicao=:faixaMedicao,
-                calibracao=:calibracao,
-                proximaCalibracao=:proximaCalibracao)");
+                calibracao,proximaCalibracao)VALUES(:idLinha,
+                :idSetor,:idAtivo,:registro,
+                :descricao,:marca,:modelo,
+                :serie,:ativoFixo,:faixaMedicao,
+                :calibracao,:proximaCalibracao)");
                 $str->bindParam("id", $ativo["id"]);
                 $str->bindParam("idLinha", $ativo["idLinha"]);
                 $str->bindParam("idSetor", $ativo["idSetor"]);
@@ -69,4 +68,14 @@
                 $str = $db->prepare("SELECT TOP 1 * FROM adicionalAtivo ORDER BY id DESC");
                 $str->execute();
                 return $str->fetchAll();
+    }
+
+    function ativo_puxar($db,$ativos){
+        foreach($ativos as $ativo){
+            $str = $db->prepare("INSERT INTO ativo (asset,descricao,item) VALUES(asset,descricao,item)");
+            $str->bindParam("asset", $ativo["asset"]);
+            $str->bindParam("descricao", $ativo["descricao"]);
+            $str->bindParam("item", $ativo["item"]);
+            $str->execute();
+        }
     }

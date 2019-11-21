@@ -52,7 +52,7 @@ function email($address, $nome, $subject, $body)
     $mensagemConcatenada .= '-------------------------------<br/><br/>'; 
     $mensagemConcatenada .= 'Mensagem: "'.$body.'"<br/>';
     $mensagemConcatenada .= '-------------------------------<br/><br/>'; 
-    $mensagemConcatenada .= 'Copyright'.date("Y"). 'Â© Flex Industries. Todos os direitos reservados.';
+    $mensagemConcatenada .= 'Copyright'.date("Y"). '© Flex Industries. Todos os direitos reservados.';
     $mail->AltBody = $body;
     $mail->Body = $mensagemConcatenada;
     //Attach an image file
